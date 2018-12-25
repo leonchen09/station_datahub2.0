@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.walletech.dao.mapper.WarningInfoMapper">
+
+    <resultMap id="warningInfoResult" type="com.walletech.po.WarningInfo">
+        <id property="id" column="id"/>
+        <result property="gprsId" column="gprs_id"/>
+        <result property="stationId" column="station_id"/>
+        <result property="rcvTime" column="rcv_time"/>
+        <result property="cellTemHigh" column="cell_tem_high" javaType="Byte" jdbcType="TINYINT"/>
+        <result property="envTemHigh" column="env_tem_high" javaType="Byte" jdbcType="TINYINT"/>
+        <result property="cellTemLow" column="cell_tem_low" javaType="Byte" jdbcType="TINYINT"/>
+        <result property="envTemLow" column="env_tem_low" javaType="Byte" jdbcType="TINYINT"/>
+        <result property="genVolHigh" column="gen_vol_high" javaType="Byte" jdbcType="TINYINT"/>
+        <result property="genVolLow" column="gen_vol_low" javaType="Byte" jdbcType="TINYINT"/>
+        <result property="lossElectricity" column="loss_electricity" javaType="Byte" jdbcType="TINYINT"/>
+        <result property="socLow" column="soc_low" javaType="Byte" jdbcType="TINYINT"/>
+        <result property="abnormalCurrent" column="abnormal_current" javaType="Integer" jdbcType="TINYINT"/>
+        <result property="singleVolHigh" column="single_vol_high" javaType="Integer" jdbcType="TINYINT"/>
+        <result property="SingleVolLow" column="single_vol_low" javaType="Integer" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Info-TABLE">
+        warning_info
+    </sql>
+
+    <sql id="info_all_columns">
+        id,gprs_id,station_id,rcv_time,cell_tem_high,env_tem_high,cell_tem_low,env_tem_low,gen_vol_high,gen_vol_low,loss_electricity,soc_low,abnormal_current
+        ,single_vol_high,single_vol_low
+    </sql>
+
+    <insert id="insertWarningInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into
+        <include refid="Info-TABLE"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="gprsId != null and gprsId != ''">
+                gprs_id,
+            </if>
+            <if test="stationId != null">
+                station_id,
+            </if>
+            <if test="rcvTime != null">
+                rcv_time,
+            </if>
+            <if test="cellTemHigh != null and gprsId != ''">
+                cell_tem_high,
+            </if>
+            <if test="envTemHigh != null ">
+                env_tem_high,
+            </if>
+            <if test="cellTemLow != null and gprsId != ''">
+                cell_tem_low,
+            </if>
+            <if test="envTemLow != null ">
+                env_tem_low,
+            </if>
+            <if test="genVolHigh != null">
+                gen_vol_high,
+            </if>
+            <if test="genVolLow != null ">
+                gen_vol_low,
+            </if>
+            <if test="lossElectricity != null ">
+                loss_electricity,
+            </if>
+            <if test="socLow != null ">
+                soc_low,
+            </if>
+            <if test="abnormalCurrent != null ">
+                abnormal_current,
+            </if>
+            <if test="singleVolHigh != null ">
+                single_vol_high,
+            </if>
+            <if test="singleVolLow != null ">
+                single_vol_low,
+            </if>
+        </trim>
+        <trim prefix="values(" suffixOverrides="," suffix=")">
+            <if test="gprsId != null and gprsId != ''">
+                #{gprsId},
+            </if>
+            <if test="stationId != null">
+                #{stationId},
+            </if>
+            <if test="rcvTime != null">
+                #{rcvTime},
+            </if>
+            <if test="cellTemHigh != null and gprsId != ''">
+                #{cellTemHigh},
+            </if>
+            <if test="envTemHigh != null ">
+                #{envTemHigh},
+            </if>
+            <if test="cellTemLow != null and gprsId != ''">
+                #{cellTemLow},
+            </if>
+            <if test="envTemLow != null ">
+                #{envTemLow},
+            </if>
+            <if test="genVolHigh != null">
+                #{genVolHigh},
+            </if>
+            <if test="genVolLow != null ">
+                #{genVolLow},
+            </if>
+            <if test="lossElectricity != null ">
+                #{lossElectricity},
+            </if>
+            <if test="socLow != null ">
+                #{socLow},
+            </if>
+            <if test="abnormalCurrent != null ">
+                #{abnormalCurrent},
+            </if>
+            <if test="singleVolHigh != null ">
+                #{singleVolHigh},
+            </if>
+            <if test="singleVolLow != null ">
+                #{singleVolLow},
+            </if>
+        </trim>
+    </insert>
+</mapper>

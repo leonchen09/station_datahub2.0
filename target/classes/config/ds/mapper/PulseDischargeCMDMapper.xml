@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.walletech.dao.mapper.PulseDischargeCMDMapper">
+
+    <resultMap id="pulseCMDInfoResult" type="com.walletech.po.PulseCMDInfo">
+        <id property="id" column="id"/>
+        <result property="gprsId" column="gprs_id"/>
+        <result property="stationId" column="station_id"/>
+        <result property="pulseCell" column="pulse_cell"/>
+        <result property="fastSampleInterval" column="fast_sample_interval" />
+        <result property="slowSampleInterval" column="slow_sample_interval" />
+        <result property="dischargeTime" column="discharge_time" />
+        <result property="slowSampleTime" column="slow_sample_time" />
+        <result property="sendDone" column="send_done" />
+        <result property="endTime" column="end_time" />
+        <result property="resultDescribe" column="result_describe" />
+    </resultMap>
+
+    <select id="pollingPulseCMD" resultMap="pulseCMDInfoResult" parameterType="java.lang.Integer">
+        select t1.id,t1.station_id,t2.gprs_id,t1.pulse_cell,t1.fast_sample_interval,t1.slow_sample_interval,
+            t1.discharge_time,t1.slow_sample_time,t1.send_done
+        from pulse_discharge_send t1, base_station_info t2
+        where t1.station_id = t2.id and t1.id in
+                (select id from
+                    (select min(t3.id) as id,t3.station_id from pulse_discharge_send t3
+                        join base_station_info t6 on t6.id = t3.station_id
+                        join gprs_connection_info t4 on t6.gprs_id = t4.gprs_id
+                        join pack_data_info_latest t5 on t3.station_id = t5.station_id
+                    where t3.send_done = 0 and t4.link_status = 1 and t5.state = '浮充' and t4.server_num=#{serverNum}
+                          and t3.station_id not in (select station_id from pulse_discharge_send where send_done = 1)
+                    group by station_id) t
+                )
+    </select>
+
+    <select id="checkTimeOut" parameterType="com.walletech.po.PulseCMDInfo" resultMap="pulseCMDInfoResult">
+        select * from pulse_discharge_send
+        where id = #{id}
+    </select>
+
+    <update id="updatePulseCMDStatus" parameterType="com.walletech.po.PulseCMDInfo">
+        update pulse_discharge_send
+        <set>
+            <if test="sendDone != null">
+                send_done = #{sendDone},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime},
+            </if>
+            <if test="resultDescribe != null">
+                result_describe = #{resultDescribe},
+            </if>
+            <if test="sendDone == 2">
+                result_describe = null,
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

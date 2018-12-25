@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.walletech.dao.mapper.VersionBalanceInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.walletech.po.VersionBalanceInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="gprs_id" property="gprsId" jdbcType="VARCHAR" />
+    <result column="para1" property="para1" jdbcType="INTEGER" />
+    <result column="para2" property="para2" jdbcType="INTEGER" />
+    <result column="para3" property="para3" jdbcType="INTEGER" />
+    <result column="para4" property="para4" jdbcType="INTEGER" />
+    <result column="para5" property="para5" jdbcType="INTEGER" />
+    <result column="para6" property="para6" jdbcType="INTEGER" />
+    <result column="para7" property="para7" jdbcType="INTEGER" />
+    <result column="blu_master_id" property="bluMasterId" jdbcType="VARCHAR" />
+    <result column="master_version" property="masterVersion" jdbcType="VARCHAR" />
+    <result column="blu_master_version" property="bluMasterVersion" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, gprs_id, para1, para2, para3, para4, para5, para6, para7, blu_master_id, master_version, 
+    blu_master_version, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from version_and_balance_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from version_and_balance_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.walletech.po.VersionBalanceInfo" >
+    insert into version_and_balance_info (id, gprs_id, para1, 
+      para2, para3, para4, 
+      para5, para6, para7, 
+      blu_master_id, master_version, blu_master_version, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{gprsId,jdbcType=VARCHAR}, #{para1,jdbcType=INTEGER}, 
+      #{para2,jdbcType=INTEGER}, #{para3,jdbcType=INTEGER}, #{para4,jdbcType=INTEGER}, 
+      #{para5,jdbcType=INTEGER}, #{para6,jdbcType=INTEGER}, #{para7,jdbcType=INTEGER}, 
+      #{bluMasterId,jdbcType=VARCHAR}, #{masterVersion,jdbcType=VARCHAR}, #{bluMasterVersion,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.walletech.po.VersionBalanceInfo" >
+    insert into version_and_balance_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="gprsId != null" >
+        gprs_id,
+      </if>
+      <if test="para1 != null" >
+        para1,
+      </if>
+      <if test="para2 != null" >
+        para2,
+      </if>
+      <if test="para3 != null" >
+        para3,
+      </if>
+      <if test="para4 != null" >
+        para4,
+      </if>
+      <if test="para5 != null" >
+        para5,
+      </if>
+      <if test="para6 != null" >
+        para6,
+      </if>
+      <if test="para7 != null" >
+        para7,
+      </if>
+      <if test="bluMasterId != null" >
+        blu_master_id,
+      </if>
+      <if test="masterVersion != null" >
+        master_version,
+      </if>
+      <if test="bluMasterVersion != null" >
+        blu_master_version,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="gprsId != null" >
+        #{gprsId,jdbcType=VARCHAR},
+      </if>
+      <if test="para1 != null" >
+        #{para1,jdbcType=INTEGER},
+      </if>
+      <if test="para2 != null" >
+        #{para2,jdbcType=INTEGER},
+      </if>
+      <if test="para3 != null" >
+        #{para3,jdbcType=INTEGER},
+      </if>
+      <if test="para4 != null" >
+        #{para4,jdbcType=INTEGER},
+      </if>
+      <if test="para5 != null" >
+        #{para5,jdbcType=INTEGER},
+      </if>
+      <if test="para6 != null" >
+        #{para6,jdbcType=INTEGER},
+      </if>
+      <if test="para7 != null" >
+        #{para7,jdbcType=INTEGER},
+      </if>
+      <if test="bluMasterId != null" >
+        #{bluMasterId,jdbcType=VARCHAR},
+      </if>
+      <if test="masterVersion != null" >
+        #{masterVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="bluMasterVersion != null" >
+        #{bluMasterVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.walletech.po.VersionBalanceInfo" >
+    update version_and_balance_info
+    <set >
+      <if test="gprsId != null" >
+        gprs_id = #{gprsId,jdbcType=VARCHAR},
+      </if>
+      <if test="para1 != null" >
+        para1 = #{para1,jdbcType=INTEGER},
+      </if>
+      <if test="para2 != null" >
+        para2 = #{para2,jdbcType=INTEGER},
+      </if>
+      <if test="para3 != null" >
+        para3 = #{para3,jdbcType=INTEGER},
+      </if>
+      <if test="para4 != null" >
+        para4 = #{para4,jdbcType=INTEGER},
+      </if>
+      <if test="para5 != null" >
+        para5 = #{para5,jdbcType=INTEGER},
+      </if>
+      <if test="para6 != null" >
+        para6 = #{para6,jdbcType=INTEGER},
+      </if>
+      <if test="para7 != null" >
+        para7 = #{para7,jdbcType=INTEGER},
+      </if>
+      <if test="bluMasterId != null" >
+        blu_master_id = #{bluMasterId,jdbcType=VARCHAR},
+      </if>
+      <if test="masterVersion != null" >
+        master_version = #{masterVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="bluMasterVersion != null" >
+        blu_master_version = #{bluMasterVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateVersionBalanceInfo" parameterType="com.walletech.po.VersionBalanceInfo" >
+    insert into version_and_balance_info (gprs_id, para1,para2, para3, para4,para5, para6, para7,
+                                          blu_master_id, master_version, blu_master_version,update_time)
+    values (#{gprsId,jdbcType=VARCHAR}, #{para1,jdbcType=INTEGER},#{para2,jdbcType=INTEGER},
+            #{para3,jdbcType=INTEGER}, #{para4,jdbcType=INTEGER},#{para5,jdbcType=INTEGER},
+            #{para6,jdbcType=INTEGER}, #{para7,jdbcType=INTEGER},#{bluMasterId,jdbcType=VARCHAR},
+            #{masterVersion,jdbcType=VARCHAR}, #{bluMasterVersion,jdbcType=VARCHAR},#{updateTime,jdbcType=TIMESTAMP})
+    ON DUPLICATE KEY UPDATE
+      gprs_id = #{gprsId,jdbcType=VARCHAR},
+      para1 = #{para1,jdbcType=INTEGER},
+      para2 = #{para2,jdbcType=INTEGER},
+      para3 = #{para3,jdbcType=INTEGER},
+      para4 = #{para4,jdbcType=INTEGER},
+      para5 = #{para5,jdbcType=INTEGER},
+      para6 = #{para6,jdbcType=INTEGER},
+      para7 = #{para7,jdbcType=INTEGER},
+      blu_master_id = #{bluMasterId,jdbcType=VARCHAR},
+      master_version = #{masterVersion,jdbcType=VARCHAR},
+      blu_master_version = #{bluMasterVersion,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+  </update>
+</mapper>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.walletech.dao.mapper.GprsStateSnapshotMapper">
+
+    <resultMap id="GprsStateSnapshot" type="com.walletech.po.GprsStateSnapshot">
+        <result property="gprsId" column="gprs_id"/>
+        <result property="linkStatus" column="link_status"/>
+        <result property="serverNum" column="server_num"/>
+        <result property="state" column="state" />
+        <result property="stationId" column="station_id"/>
+    </resultMap>
+
+    <select id="getGprsState" resultMap="GprsStateSnapshot">
+        select t1.gprs_id,t2.id as station_id,t1.server_num , t1.link_status, t3.state
+        from gprs_connection_info t1 LEFT JOIN base_station_info t2 on t1.gprs_id = t2.gprs_id
+            LEFT JOIN pack_data_info_latest t3 on t2.id = t3.station_id
+    </select>
+
+</mapper>

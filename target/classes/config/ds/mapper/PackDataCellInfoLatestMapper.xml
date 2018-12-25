@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.walletech.dao.mapper.PackDataCellInfoLatestMapper">
+
+    <resultMap id="latestResult" type="com.walletech.po.PackDataCellInfoLatest">
+        <id property="gprsId" column="gprs_id"/>
+        <result property="stationId" column="station_id"/>
+        <result property="cellIndex" column="cell_index"/>
+        <result property="cellVol" column="cell_vol" javaType="BigDecimal" jdbcType="DECIMAL"/>
+        <result property="cellCur" column="cell_cur" javaType="BigDecimal" jdbcType="DECIMAL"/>
+        <result property="cellTem" column="cell_tem" javaType="BigDecimal" jdbcType="DECIMAL"/>
+        <result property="cellEqu" column="cell_equ"/>
+        <result property="cellSuc" column="cell_suc"/>
+        <result property="rcvTime" column="rcv_time"/>
+    </resultMap>
+
+    <sql id="InfoLatest-TABLE">
+          pack_data_cellinfo_latest
+    </sql>
+
+    <sql id="latest_all_columns">
+          gprs_id,station_id,cell_index,cell_vol,cell_cur,cell_tem,cell_equ,cell_suc,rcv_time
+    </sql>
+
+    <insert id="replaceIntoCellInfoLatest">
+        replace into
+        <include refid="InfoLatest-TABLE"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            gprs_id,
+            station_id,
+            cell_index,
+            cell_vol,
+            cell_cur,
+            cell_tem,
+            cell_equ,
+            cell_suc,
+            rcv_time,
+        </trim>
+        values
+        <foreach collection="list" item="cell" separator=",">
+            <trim prefix="(" suffixOverrides="," suffix=")">
+                #{cell.gprsId},
+                #{cell.stationId},
+                #{cell.cellIndex},
+                #{cell.cellVol},
+                #{cell.cellCur},
+                #{cell.cellTem},
+                #{cell.cellEqu},
+                #{cell.cellSuc},
+                #{cell.rcvTime},
+            </trim>
+        </foreach>
+    </insert>
+
+    <insert id="insertCellInfoLatest">
+        insert into
+        <include refid="InfoLatest-TABLE"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            gprs_id,
+            station_id,
+            cell_index,
+            cell_vol,
+            cell_cur,
+            cell_tem,
+            cell_equ,
+            cell_suc,
+            rcv_time,
+        </trim>
+        values
+        <foreach collection="list" item="cell" separator=",">
+            <trim prefix="(" suffixOverrides="," suffix=")">
+                #{cell.gprsId},
+                #{cell.stationId},
+                #{cell.cellIndex},
+                #{cell.cellVol},
+                #{cell.cellCur},
+                #{cell.cellTem},
+                #{cell.cellEqu},
+                #{cell.cellSuc},
+                #{cell.rcvTime},
+            </trim>
+        </foreach>
+    </insert>
+
+    <update id="updateCellInfoLatest">
+        update pack_data_cellinfo_latest
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="cell_vol =case" suffix="end,">
+                <foreach collection="list" item="cell" >
+                    when cell_index = #{cell.cellIndex}
+                    then #{cell.cellVol}
+                </foreach>
+            </trim>
+            <trim prefix="cell_cur =case" suffix="end,">
+                <foreach collection="list" item="cell" >
+                    when  cell_index = #{cell.cellIndex}
+                    then #{cell.cellCur}
+                </foreach>
+            </trim>
+            <trim prefix="cell_tem =case" suffix="end,">
+                <foreach collection="list" item="cell" >
+                    when cell_index = #{cell.cellIndex}
+                    then #{cell.cellTem}
+                </foreach>
+            </trim>
+            <trim prefix="cell_equ =case" suffix="end,">
+                <foreach collection="list" item="cell" >
+                    when cell_index = #{cell.cellIndex}
+                    then #{cell.cellEqu}
+                </foreach>
+            </trim>
+            <trim prefix="cell_suc =case" suffix="end,">
+                <foreach collection="list" item="cell" >
+                    when cell_index = #{cell.cellIndex}
+                    then #{cell.cellSuc}
+                </foreach>
+            </trim>
+            <trim prefix="rcv_time =case" suffix="end,">
+                <foreach collection="list" item="cell" >
+                    when cell_index = #{cell.cellIndex}
+                    then #{cell.rcvTime}
+                </foreach>
+            </trim>
+        </trim>
+        where
+        <if test="list[0].stationId == null">
+          station_id = -1
+        </if>
+        <if test="list[0].stationId != null">
+          station_id = #{list[0].stationId}
+        </if>
+        and gprs_id in
+        <foreach collection="list" item="cell" open="(" close=")" separator="," >
+            #{cell.gprsId}
+        </foreach>
+    </update>
+
+</mapper>

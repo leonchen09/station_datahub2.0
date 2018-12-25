@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.walletech.dao.mapper.SystemStartMapper">
+    <update id="updateGprsConnectionInfo" parameterType="java.lang.Integer">
+        update gprs_connection_info set link_status = 0
+        where server_num = #{serverNum,jdbcType=INTEGER}
+    </update>
+    <update id="updateDeviceInfo" parameterType="java.lang.Integer">
+        update gprs_device_info set link_status = 0
+        where gprs_id in (select gprs_id from gprs_connection_info where server_num = #{serverNum,jdbcType=INTEGER})
+    </update>
+</mapper>

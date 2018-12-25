@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.walletech.dao.mapper.SubBalanceConfigSendMapper" >
+  <resultMap id="BaseResultMap" type="com.walletech.po.SubBalanceConfigSend" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="gprs_id" property="gprsId" jdbcType="VARCHAR" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="balance_subdevice_code" property="balanceSubdeviceCode" jdbcType="TINYINT" />
+    <result column="up_pattern_out_power" property="upPatternOutPower" jdbcType="DECIMAL" />
+    <result column="up_pattern_out_vol" property="upPatternOutVol" jdbcType="DECIMAL" />
+    <result column="down_pattern_out_cur" property="downPatternOutCur" jdbcType="DECIMAL" />
+    <result column="down_pattern_out_vol" property="downPatternOutVol" jdbcType="DECIMAL" />
+    <result column="up_pattern_low_vol_threshold" property="upPatternLowVolThreshold" jdbcType="DECIMAL" />
+    <result column="up_pattern_high_vol_constant_vol" property="upPatternHighVolConstantVol" jdbcType="DECIMAL" />
+    <result column="up_pattern_high_vol_threshold" property="upPatternHighVolThreshold" jdbcType="DECIMAL" />
+    <result column="down_pattern_high_vol_low_vol_threshold" property="downPatternHighVolLowVolThreshold" jdbcType="DECIMAL" />
+    <result column="down_pattern_down_vol_constant" property="downPatternDownVolConstant" jdbcType="DECIMAL" />
+    <result column="down_pattern_high_vol_threshold" property="downPatternHighVolThreshold" jdbcType="DECIMAL" />
+    <result column="up_balance_time" property="upBalanceTime" jdbcType="DECIMAL" />
+    <result column="min_discharge_vol_threshold" property="minDischargeVolThreshold" jdbcType="DECIMAL" />
+    <result column="low_floating_discharge_vol_threshold" property="lowFloatingDischargeVolThreshold" jdbcType="DECIMAL" />
+    <result column="low_floating_discharge_cur_threshold" property="lowFloatingDischargeCurThreshold" jdbcType="DECIMAL" />
+    <result column="send_done" property="sendDone" jdbcType="INTEGER" />
+    <result column="down_pattern_three_change_floating_cur" property="downPatternThreeChangeFloatingCur" jdbcType="DECIMAL"/>
+    <result column="down_pattern_three_floating_cur_upper" property="downPatternThreeFloatingCurUpper" jdbcType="DECIMAL"/>
+    <result column="balance_link_way" property="balanceLinkWay" jdbcType="INTEGER" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, gprs_id, end_time, balance_subdevice_code, up_pattern_out_power, up_pattern_out_vol, 
+    down_pattern_out_cur, down_pattern_out_vol, up_pattern_low_vol_threshold, up_pattern_high_vol_constant_vol, 
+    up_pattern_high_vol_threshold, down_pattern_high_vol_low_vol_threshold, down_pattern_down_vol_constant, 
+    down_pattern_high_vol_threshold, send_done,up_balance_time,min_discharge_vol_threshold,
+    low_floating_discharge_vol_threshold,low_floating_discharge_cur_threshold,
+    down_pattern_three_change_floating_cur,down_pattern_three_floating_cur_upper,balance_link_way
+  </sql>
+
+
+  <select id="pollingSubBalanceConfigSend" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select t1.*
+    from sub_balance_config_send t1 , gprs_connection_info t2
+    where t1.gprs_id = t2.gprs_id and t2.link_status = 1 and t2.server_num = #{serverNum} and t1.send_done = 0
+  </select>
+
+  <update id="updateByPrimaryKey" parameterType="com.walletech.po.SubBalanceConfigSend" >
+    update sub_balance_config_send
+    set  send_done = #{sendDone,jdbcType=INTEGER} , end_time = #{endTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="checkTimeOut" resultMap="BaseResultMap" parameterType="com.walletech.po.SubBalanceConfigSend">
+    select * from sub_balance_config_send where send_done = 1 and id = #{id,jdbcType=INTEGER}
+  </select>
+
+</mapper>

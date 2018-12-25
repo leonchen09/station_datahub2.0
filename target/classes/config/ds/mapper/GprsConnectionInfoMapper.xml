@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.walletech.dao.mapper.GprsConnectionInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.walletech.po.GprsConnectionInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="gprs_id" property="gprsId" jdbcType="VARCHAR" />
+    <result column="link_status" property="linkStatus" jdbcType="BIT" />
+    <result column="last_active_time" property="lastActiveTime" jdbcType="TIMESTAMP" />
+    <result column="port" property="port" jdbcType="INTEGER" />
+    <result column="server_num" property="serverNum" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, gprs_id, link_status, last_active_time, port, server_num
+  </sql>
+  <select id="getGprsConnectionInfoByGprsId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select *
+    from gprs_connection_info where gprs_id = #{gprsId}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from gprs_connection_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insertOrUpdateGprsConnectionInfo" parameterType="com.walletech.po.GprsConnectionInfo" >
+    insert into gprs_connection_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="gprsId != null" >
+        gprs_id,
+      </if>
+      <if test="linkStatus != null" >
+        link_status,
+      </if>
+      <if test="lastActiveTime != null" >
+        last_active_time,
+      </if>
+      <if test="port != null" >
+        port,
+      </if>
+      <if test="serverNum != null" >
+        server_num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="gprsId != null" >
+        #{gprsId,jdbcType=VARCHAR},
+      </if>
+      <if test="linkStatus != null" >
+        #{linkStatus,jdbcType=BIT},
+      </if>
+      <if test="lastActiveTime != null" >
+        #{lastActiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="port != null" >
+        #{port,jdbcType=INTEGER},
+      </if>
+      <if test="serverNum != null" >
+        #{serverNum,jdbcType=INTEGER},
+      </if>
+    </trim>
+    ON DUPLICATE KEY UPDATE
+    <trim suffixOverrides=",">
+      <if test="linkStatus != null" >
+        link_status = #{linkStatus,jdbcType=BIT},
+      </if>
+      <if test="lastActiveTime != null" >
+        last_active_time = #{lastActiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="port != null" >
+        port = #{port,jdbcType=INTEGER},
+      </if>
+      <if test="serverNum != null" >
+        server_num = #{serverNum,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateGprsConnectionInfo" parameterType="com.walletech.po.GprsConnectionInfo" >
+    update gprs_connection_info
+    <set >
+      <if test="linkStatus != null" >
+        link_status = #{linkStatus,jdbcType=BIT},
+      </if>
+      <if test="lastActiveTime != null" >
+        last_active_time = #{lastActiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="port != null" >
+        port = #{port,jdbcType=INTEGER},
+      </if>
+      <if test="serverNum != null" >
+        server_num = #{serverNum,jdbcType=INTEGER},
+      </if>
+    </set>
+    where server_num = #{serverNum,jdbcType=INTEGER} and gprs_id = #{gprsId,jdbcType=VARCHAR}
+  </update>
+</mapper>

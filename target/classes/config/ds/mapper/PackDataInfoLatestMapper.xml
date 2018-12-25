@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.walletech.dao.mapper.PackDataInfoLatestMapper">
+
+    <resultMap id="latestResult" type="com.walletech.po.PackDataInfo">
+        <id property="gprsId" column="gprs_Id"/>
+        <result property="stationId" column="station_id"/>
+        <result property="rcvTime" column="rcv_time"/>
+        <result property="state" column="state"/>
+        <result property="genVol" column="gen_vol" javaType="BigDecimal" jdbcType="DECIMAL"/>
+        <result property="genCur" column="gen_cur" javaType="BigDecimal" jdbcType="DECIMAL"/>
+        <result property="environTem" column="environ_tem"/>
+        <result property="soc" column="soc" javaType="BigDecimal" jdbcType="DECIMAL"/>
+        <result property="passiveBalance" column="passive_balance" javaType="Byte" jdbcType="TINYINT"/>
+        <result property="initiativeBalance" column="initiative_balance" javaType="Byte" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="InfoLatest-TABLE">
+        pack_data_info_latest
+    </sql>
+
+    <sql id="latest_all_columns">
+        gprs_id,station_id,rcv_time,state,gen_vol,gen_cur,environ_tem,soc,passive_balance,initiative_balance
+    </sql>
+
+    <insert id="replaceIntoInfoLatest">
+        insert into
+        <include refid="InfoLatest-TABLE"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="gprsId != null and gprsId != ''">
+                gprs_id,
+            </if>
+            <if test="stationId != null">
+                station_id,
+            </if>
+            <if test="rcvTime != null">
+                rcv_time,
+            </if>
+            <if test="state != null and state != ''">
+                state,
+            </if>
+            <if test="genVol != null ">
+                gen_vol,
+            </if>
+            <if test="genCur != null ">
+                gen_cur,
+            </if>
+            <if test="soc != null">
+                soc,
+            </if>
+            <if test="environTem != null ">
+                environ_tem,
+            </if>
+            <if test="passiveBalance != null ">
+                passive_balance,
+            </if>
+            <if test="initiativeBalance != null ">
+                initiative_balance
+            </if>
+        </trim>
+        <trim prefix="values(" suffixOverrides="," suffix=")">
+            <if test="gprsId != null and gprsId != ''">
+                #{gprsId},
+            </if>
+            <if test="stationId != null">
+                #{stationId},
+            </if>
+            <if test="rcvTime != null">
+                #{rcvTime},
+            </if>
+            <if test="gprsId != null and gprsId != ''">
+                #{state},
+            </if>
+            <if test="genVol != null ">
+                #{genVol},
+            </if>
+            <if test="genCur != null ">
+                #{genCur},
+            </if>
+            <if test="soc != null">
+                #{soc},
+            </if>
+            <if test="environTem != null ">
+                #{environTem},
+            </if>
+            <if test="passiveBalance != null ">
+                #{passiveBalance},
+            </if>
+            <if test="initiativeBalance != null ">
+                #{initiativeBalance}
+            </if>
+        </trim>
+        ON DUPLICATE KEY UPDATE
+        <trim suffixOverrides=",">
+            <if test="gprsId != null and gprsId != ''">
+                gprs_id = #{gprsId},
+            </if>
+            <if test="rcvTime != null">
+                rcv_time = #{rcvTime},
+            </if>
+            <if test="gprsId != null and gprsId != ''">
+                state = #{state},
+            </if>
+            <if test="genVol != null ">
+                gen_vol = #{genVol},
+            </if>
+            <if test="genCur != null ">
+                gen_cur = #{genCur},
+            </if>
+            <if test="soc != null">
+                soc = #{soc},
+            </if>
+            <if test="environTem != null ">
+                environ_tem = #{environTem},
+            </if>
+            <if test="passiveBalance != null ">
+                passive_balance = #{passiveBalance},
+            </if>
+            <if test="initiativeBalance != null ">
+                initiative_balance = #{initiativeBalance}
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="insertIntoInfoLatest">
+        insert into
+        <include refid="InfoLatest-TABLE"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="gprsId != null and gprsId != ''">
+                gprs_id,
+            </if>
+            <if test="stationId != null">
+                station_id,
+            </if>
+            <if test="rcvTime != null">
+                rcv_time,
+            </if>
+            <if test="state != null and state != ''">
+                state,
+            </if>
+            <if test="genVol != null ">
+                gen_vol,
+            </if>
+            <if test="genCur != null ">
+                gen_cur,
+            </if>
+            <if test="soc != null">
+                soc,
+            </if>
+            <if test="environTem != null ">
+                environ_tem,
+            </if>
+            <if test="passiveBalance != null ">
+                passive_balance,
+            </if>
+            <if test="initiativeBalance != null ">
+                initiative_balance
+            </if>
+        </trim>
+        <trim prefix="values(" suffixOverrides="," suffix=")">
+            <if test="gprsId != null and gprsId != ''">
+                #{gprsId},
+            </if>
+            <if test="stationId != null">
+                #{stationId},
+            </if>
+            <if test="rcvTime != null">
+                #{rcvTime},
+            </if>
+            <if test="gprsId != null and gprsId != ''">
+                #{state},
+            </if>
+            <if test="genVol != null ">
+                #{genVol},
+            </if>
+            <if test="genCur != null ">
+                #{genCur},
+            </if>
+            <if test="soc != null">
+                #{soc},
+            </if>
+            <if test="environTem != null ">
+                #{environTem},
+            </if>
+            <if test="passiveBalance != null ">
+                #{passiveBalance},
+            </if>
+            <if test="initiativeBalance != null ">
+                #{initiativeBalance}
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateInfoLatest">
+        update
+        <include refid="InfoLatest-TABLE"/>
+        set
+        rcv_time = #{rcvTime},
+        state = #{state},
+        gen_vol = #{genVol},
+        gen_cur = #{genCur},
+        soc = #{soc},
+        environ_tem = #{environTem},
+        passive_balance = #{passiveBalance},
+        initiative_balance = #{initiativeBalance}
+        where
+        <if test="stationId == null">
+            station_id = -1 and gprs_id = #{gprsId}
+        </if>
+        <if test="stationId != null">
+            station_id = #{stationId}
+        </if>
+
+    </update>
+
+    <select id="checkInsertOrUpdate" parameterType="String" resultMap="latestResult">
+        select * from
+        <include refid="InfoLatest-TABLE"/>
+        where gprs_id = #{gprsId} and station_id = -1
+    </select>
+
+</mapper>

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.walletech.dao.mapper.PackDataBalanceInfoLatestMapper" >
+  <resultMap id="BaseResultMap" type="com.walletech.po.PackDataBalanceInfoLatest" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="station_id" property="stationId" jdbcType="INTEGER" />
+    <result column="gprs_id" property="gprsId" jdbcType="VARCHAR" />
+    <result column="rcv_time" property="rcvTime" jdbcType="TIMESTAMP" />
+    <result column="balance_subdevice_code" property="balanceSubdeviceCode" jdbcType="TINYINT" />
+    <result column="low_vol" property="lowVol" jdbcType="DECIMAL" />
+    <result column="high_vol" property="highVol" jdbcType="DECIMAL" />
+    <result column="low_cur" property="lowCur" jdbcType="DECIMAL" />
+    <result column="high_cur" property="highCur" jdbcType="DECIMAL" />
+    <result column="low_power" property="lowPower" jdbcType="DECIMAL" />
+    <result column="high_power" property="highPower" jdbcType="DECIMAL" />
+    <result column="power_tem" property="powerTem" jdbcType="DECIMAL" />
+    <result column="current_pattern" property="currentPattern" jdbcType="INTEGER" />
+    <result column="current_status" property="currentStatus" jdbcType="INTEGER" />
+    <result column="overcurrent_warn" property="overcurrentWarn" jdbcType="INTEGER" />
+    <result column="up_high_vol_warn" property="upHighVolWarn" jdbcType="INTEGER" />
+    <result column="up_low_vol_warn" property="upLowVolWarn" jdbcType="INTEGER" />
+    <result column="down_high_vol_warn" property="downHighVolWarn" jdbcType="INTEGER" />
+    <result column="down_low_vol_warn" property="downLowVolWarn" jdbcType="INTEGER" />
+    <result column="overcurrent_tem" property="overcurrentTem" jdbcType="INTEGER" />
+    <result column="up_balance" property="upBalance" jdbcType="INTEGER" />
+    <result column="down_balance" property="downBalance" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, station_id, gprs_id, rcv_time, balance_subdevice_code, low_vol, high_vol, low_cur, 
+    high_cur, low_power, high_power, power_tem, current_pattern, current_status, overcurrent_warn, 
+    up_high_vol_warn, up_low_vol_warn, down_high_vol_warn, down_low_vol_warn, overcurrent_tem, 
+    up_balance, down_balance
+  </sql>
+
+  <insert id="replacePackDataBalanceLatestInfos" >
+    replace into
+    pack_data_balance_info_latest
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      station_id, gprs_id,
+      rcv_time, balance_subdevice_code, low_vol,
+      high_vol, low_cur, high_cur,
+      low_power, high_power, power_tem,
+      current_pattern, current_status, overcurrent_warn,
+      up_high_vol_warn, up_low_vol_warn, down_high_vol_warn,
+      down_low_vol_warn, overcurrent_tem, up_balance , down_balance
+    </trim>
+    values
+    <foreach collection="list" item="item" separator=",">
+      <trim prefix="(" suffixOverrides="," suffix=")">
+        #{item.stationId,jdbcType=INTEGER}, #{item.gprsId,jdbcType=VARCHAR},
+        #{item.rcvTime,jdbcType=TIMESTAMP}, #{item.balanceSubdeviceCode,jdbcType=TINYINT},
+        #{item.lowVol,jdbcType=DECIMAL}, #{item.highVol,jdbcType=DECIMAL},
+        #{item.lowCur,jdbcType=DECIMAL}, #{item.highCur,jdbcType=DECIMAL},
+        #{item.lowPower,jdbcType=DECIMAL}, #{item.highPower,jdbcType=DECIMAL},
+        #{item.powerTem,jdbcType=DECIMAL}, #{item.currentPattern,jdbcType=INTEGER},
+        #{item.currentStatus,jdbcType=INTEGER}, #{item.overcurrentWarn,jdbcType=INTEGER},
+        #{item.upHighVolWarn,jdbcType=INTEGER}, #{item.upLowVolWarn,jdbcType=INTEGER},
+        #{item.downHighVolWarn,jdbcType=INTEGER}, #{item.downLowVolWarn,jdbcType=INTEGER},
+        #{item.overcurrentTem,jdbcType=INTEGER}, #{item.upBalance,jdbcType=INTEGER},
+        #{item.downBalance,jdbcType=INTEGER}
+      </trim>
+    </foreach>
+  </insert>
+
+  <select id="checkInsertOrUpdate" resultMap="BaseResultMap" parameterType="String">
+    select * from pack_data_balance_info_latest
+    where gprs_id = #{gprsId} and station_id = -1 limit 1
+  </select>
+
+  <insert id="insertPackDataBalanceLatestInfos" >
+      insert into
+      pack_data_balance_info_latest
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        station_id, gprs_id,
+        rcv_time, balance_subdevice_code, low_vol,
+        high_vol, low_cur, high_cur,
+        low_power, high_power, power_tem,
+        current_pattern, current_status, overcurrent_warn,
+        up_high_vol_warn, up_low_vol_warn, down_high_vol_warn,
+        down_low_vol_warn, overcurrent_tem, up_balance, down_balance
+      </trim>
+      values
+      <foreach collection="list" item="item" separator=",">
+        <trim prefix="(" suffixOverrides="," suffix=")">
+          #{item.stationId,jdbcType=INTEGER}, #{item.gprsId,jdbcType=VARCHAR},
+          #{item.rcvTime,jdbcType=TIMESTAMP}, #{item.balanceSubdeviceCode,jdbcType=TINYINT},
+          #{item.lowVol,jdbcType=DECIMAL}, #{item.highVol,jdbcType=DECIMAL},
+          #{item.lowCur,jdbcType=DECIMAL}, #{item.highCur,jdbcType=DECIMAL},
+          #{item.lowPower,jdbcType=DECIMAL}, #{item.highPower,jdbcType=DECIMAL},
+          #{item.powerTem,jdbcType=DECIMAL}, #{item.currentPattern,jdbcType=INTEGER},
+          #{item.currentStatus,jdbcType=INTEGER}, #{item.overcurrentWarn,jdbcType=INTEGER},
+          #{item.upHighVolWarn,jdbcType=INTEGER}, #{item.upLowVolWarn,jdbcType=INTEGER},
+          #{item.downHighVolWarn,jdbcType=INTEGER}, #{item.downLowVolWarn,jdbcType=INTEGER},
+          #{item.overcurrentTem,jdbcType=INTEGER}, #{item.upBalance,jdbcType=INTEGER},
+          #{item.downBalance,jdbcType=INTEGER}
+        </trim>
+      </foreach>
+    </insert>
+
+    <update id="updatePackDataBalanceLatestInfos" >
+      update pack_data_balance_info_latest
+      <trim prefix="set" suffixOverrides=",">
+        <trim prefix="rcv_time =case" suffix="end,">
+          <foreach collection="list" item="item" >
+            when balance_subdevice_code = #{item.balanceSubdeviceCode} 
+            then #{item.rcvTime}
+          </foreach>
+        </trim>
+        <trim prefix="low_vol =case" suffix="end,">
+          <foreach collection="list" item="item" >
+            when balance_subdevice_code = #{item.balanceSubdeviceCode}
+            then #{item.lowVol}
+          </foreach>
+        </trim>
+        <trim prefix="high_vol =case" suffix="end,">
+          <foreach collection="list" item="item" >
+            when balance_subdevice_code = #{item.balanceSubdeviceCode} 
+            then #{item.highVol}
+          </foreach>
+        </trim>
+        <trim prefix="low_cur =case" suffix="end,">
+          <foreach collection="list" item="item" >
+            when balance_subdevice_code = #{item.balanceSubdeviceCode} 
+            then #{item.lowCur}
+          </foreach>
+        </trim>
+        <trim prefix="high_cur =case" suffix="end,">
+          <foreach collection="list" item="item" >
+            when balance_subdevice_code = #{item.balanceSubdeviceCode} 
+            then #{item.highCur}
+          </foreach>
+        </trim>
+        <trim prefix="low_power =case" suffix="end,">
+          <foreach collection="list" item="item" >
+            when balance_subdevice_code = #{item.balanceSubdeviceCode}
+            then #{item.lowPower}
+          </foreach>
+        </trim>
+        <trim prefix="high_power =case" suffix="end,">
+          <foreach collection="list" item="item" >
+            when balance_subdevice_code = #{item.balanceSubdeviceCode}
+            then #{item.highPower}
+          </foreach>
+        </trim>
+        <trim prefix="power_tem =case" suffix="end,">
+          <foreach collection="list" item="item" >
+            when balance_subdevice_code = #{item.balanceSubdeviceCode}
+            then #{item.powerTem}
+          </foreach>
+        </trim>
+        <trim prefix="current_pattern =case" suffix="end,">
+          <foreach collection="list" item="item" >
+            when balance_subdevice_code = #{item.balanceSubdeviceCode}
+            then #{item.currentPattern}
+          </foreach>
+        </trim>
+        <trim prefix="current_status =case" suffix="end,">
+          <foreach collection="list" item="item" >
+            when balance_subdevice_code = #{item.balanceSubdeviceCode}
+            then #{item.currentStatus}
+          </foreach>
+        </trim>
+        <trim prefix="overcurrent_warn =case" suffix="end,">
+          <foreach collection="list" item="item" >
+            when balance_subdevice_code = #{item.balanceSubdeviceCode}
+            then #{item.overcurrentWarn}
+          </foreach>
+        </trim>
+        <trim prefix="up_high_vol_warn =case" suffix="end,">
+          <foreach collection="list" item="item" >
+            when balance_subdevice_code = #{item.balanceSubdeviceCode}
+            then #{item.upHighVolWarn}
+          </foreach>
+        </trim>
+        <trim prefix="up_low_vol_warn =case" suffix="end,">
+          <foreach collection="list" item="item" >
+            when balance_subdevice_code = #{item.balanceSubdeviceCode}
+            then #{item.upLowVolWarn}
+          </foreach>
+        </trim>
+        <trim prefix="down_high_vol_warn =case" suffix="end,">
+          <foreach collection="list" item="item" >
+            when balance_subdevice_code = #{item.balanceSubdeviceCode}
+            then #{item.downHighVolWarn}
+          </foreach>
+        </trim>
+        <trim prefix="down_low_vol_warn =case" suffix="end,">
+          <foreach collection="list" item="item" >
+            when balance_subdevice_code = #{item.balanceSubdeviceCode}
+            then #{item.downLowVolWarn}
+          </foreach>
+        </trim>
+        <trim prefix="overcurrent_tem =case" suffix="end,">
+          <foreach collection="list" item="item" >
+            when balance_subdevice_code = #{item.balanceSubdeviceCode}
+            then #{item.overcurrentTem}
+          </foreach>
+        </trim>
+        <trim prefix="up_balance =case" suffix="end,">
+          <foreach collection="list" item="item" >
+            when balance_subdevice_code = #{item.balanceSubdeviceCode}
+            then #{item.upBalance}
+          </foreach>
+        </trim>
+        <trim prefix="down_balance =case" suffix="end,">
+          <foreach collection="list" item="item" >
+            when balance_subdevice_code = #{item.balanceSubdeviceCode}
+            then #{item.downBalance}
+          </foreach>
+        </trim>
+      </trim>
+      where
+      <if test="list[0].stationId == null">
+        station_id = -1
+      </if>
+      <if test="list[0].stationId != null">
+        station_id = #{list[0].stationId}
+      </if>
+      and gprs_id in
+      <foreach collection="list" item="item" open="(" close=")" separator="," >
+        #{item.gprsId}
+      </foreach>
+    </update>
+
+</mapper>

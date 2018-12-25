@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit-1.6.xsd">
+
+    <rabbit:connection-factory id="rabbitConnectionFactory" host="${rabbit.hosts}"
+                               port="${rabbit.port}" username="${rabbit.username}"
+                               password="${rabbit.password}" virtual-host="${rabbit.virtualHost}"
+                               channel-cache-size="${rabbit.channel.cache.size}" publisher-confirms="true"/>
+
+    <rabbit:admin connection-factory="rabbitConnectionFactory"/>
+    <!--创建消息模板-->
+    <rabbit:template id="rabbitTemplate" connection-factory="rabbitConnectionFactory"/>
+    
+
+    <!--定义消息队列-->
+    <rabbit:queue id="parameterConfig.queue" name="parameterConfig.queue.${server.num}"/>
+    <rabbit:queue id="updateCapacity.queue" name="updateCapacity.queue.${server.num}"/>
+    <rabbit:queue id="pulseDischarge.queue" name="pulseDischarge.queue.${server.num}"/>
+    <rabbit:queue id="updateGprsId.queue" name="updateGprsId.queue.${server.num}"/>
+    <rabbit:queue id="gprsRestart.queue" name="gprsRestart.queue.${server.num}"/>
+    <rabbit:queue id="balanceConfig.queue" name="balanceConfig.queue.${server.num}"/>
+    <rabbit:queue id="subBalanceStatus.queue" name="subBalanceStatus.queue.${server.num}"/>
+
+    <rabbit:topic-exchange name="datahub.topic" delayed="true">
+        <rabbit:bindings>
+
+            <rabbit:binding pattern="parameterConfig" queue="parameterConfig.queue"/>
+            <rabbit:binding pattern="parameterConfig.${server.num}" queue="parameterConfig.queue"/>
+
+            <rabbit:binding pattern="updateCapacity" queue="updateCapacity.queue"/>
+            <rabbit:binding pattern="updateCapacity.${server.num}" queue="updateCapacity.queue"/>
+
+            <rabbit:binding pattern="pulseDischarge" queue="pulseDischarge.queue"/>
+            <rabbit:binding pattern="pulseDischarge.${server.num}" queue="pulseDischarge.queue"/>
+
+            <rabbit:binding pattern="updateGprsId" queue="updateGprsId.queue"/>
+            <rabbit:binding pattern="updateGprsId.${server.num}" queue="updateGprsId.queue"/>
+
+            <rabbit:binding pattern="gprsRestart" queue="gprsRestart.queue"/>
+
+            <rabbit:binding pattern="balanceConfig" queue="balanceConfig.queue"/>
+            <rabbit:binding pattern="balanceConfig.${server.num}" queue="balanceConfig.queue"/>
+
+            <rabbit:binding pattern="subBalanceStatus" queue="subBalanceStatus.queue"/>
+            <rabbit:binding pattern="subBalanceStatus.${server.num}" queue="subBalanceStatus.queue"/>
+
+        </rabbit:bindings>
+    </rabbit:topic-exchange>
+
+
+    <rabbit:listener-container acknowledge="manual" prefetch="50">
+        <rabbit:listener ref="parameterConfigListener" method="onMessage" queues="parameterConfig.queue"/>
+        <rabbit:listener ref="updateCapacityListener" method="onMessage" queues="updateCapacity.queue"/>
+        <rabbit:listener ref="pulseDischargeListener" method="onMessage" queues="pulseDischarge.queue"/>
+        <rabbit:listener ref="updateGprsIdListener" method="onMessage" queues="updateGprsId.queue"/>
+        <rabbit:listener ref="gprsRestartListener" method="onMessage" queues="gprsRestart.queue"/>
+        <rabbit:listener ref="balanceConfigListener" method="onMessage" queues="balanceConfig.queue"/>
+        <rabbit:listener ref="balanceStatusListener" method="onMessage" queues="subBalanceStatus.queue"/>
+    </rabbit:listener-container>
+
+    <bean id="parameterConfigListener" class="com.walletech.rabbit.ParameterConfigListener"/>
+    <bean id="updateCapacityListener" class="com.walletech.rabbit.UpdateCapacityListener"/>
+    <bean id="pulseDischargeListener" class="com.walletech.rabbit.PulseDischargeListener"/>
+    <bean id="updateGprsIdListener" class="com.walletech.rabbit.UpdateGprsIdListener"/>
+    <bean id="gprsRestartListener" class="com.walletech.rabbit.GprsRestartListener"/>
+    <bean id="balanceConfigListener" class="com.walletech.rabbit.BalanceConfigListener" />
+    <bean id="balanceStatusListener" class="com.walletech.rabbit.BalanceStatusListener" />
+
+</beans>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.walletech.dao.mapper.SubDeviceBalanceConfigMapper" >
+  <resultMap id="BaseResultMap" type="com.walletech.po.SubDeviceBalanceConfig" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="gprs_id" property="gprsId" jdbcType="VARCHAR" />
+    <result column="rcv_time" property="rcvTime" jdbcType="TIMESTAMP" />
+    <result column="balance_subdevice_code" property="balanceSubdeviceCode" jdbcType="TINYINT" />
+    <result column="up_pattern_in_power" property="upPatternInPower" jdbcType="DECIMAL" />
+    <result column="up_pattern_out_vol" property="upPatternOutVol" jdbcType="DECIMAL" />
+    <result column="down_pattern_out_cur" property="downPatternOutCur" jdbcType="DECIMAL" />
+    <result column="down_pattern_out_vol" property="downPatternOutVol" jdbcType="DECIMAL" />
+    <result column="up_pattern_low_vol_threshold" property="upPatternLowVolThreshold" jdbcType="DECIMAL" />
+    <result column="up_pattern_high_vol_constant_vol" property="upPatternHighVolConstantVol" jdbcType="DECIMAL" />
+    <result column="up_pattern_high_vol_threshold" property="upPatternHighVolThreshold" jdbcType="DECIMAL" />
+    <result column="down_pattern_high_vol_low_vol_threshold" property="downPatternHighVolLowVolThreshold" jdbcType="DECIMAL" />
+    <result column="down_pattern_down_vol_constant" property="downPatternDownVolConstant" jdbcType="DECIMAL" />
+    <result column="down_pattern_high_vol_threshold" property="downPatternHighVolThreshold" jdbcType="DECIMAL" />
+    <result column="up_balance_time" property="upBalanceTime" jdbcType="DECIMAL" />
+    <result column="min_discharge_vol_threshold" property="minDischargeVolThreshold" jdbcType="DECIMAL" />
+    <result column="low_floating_discharge_vol_threshold" property="lowFloatingDischargeVolThreshold" jdbcType="DECIMAL" />
+    <result column="low_floating_discharge_cur_threshold" property="lowFloatingDischargeCurThreshold" jdbcType="DECIMAL" />
+    <result column="is_balance" property="isBalance" jdbcType="INTEGER" />
+    <result column="is_valid" property="isValid" jdbcType="INTEGER" />
+    <result column="down_pattern_three_change_floating_cur" property="downPatternThreeChangeFloatingCur" jdbcType="DECIMAL"/>
+    <result column="down_pattern_three_floating_cur_upper" property="downPatternThreeFloatingCurUpper" jdbcType="DECIMAL"/>
+    <result column="balance_link_way" property="balanceLinkWay" jdbcType="INTEGER" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, gprs_id, rcv_time, balance_subdevice_code, up_pattern_in_power, up_pattern_out_vol,
+    down_pattern_out_cur, down_pattern_out_vol, up_pattern_low_vol_threshold, up_pattern_high_vol_constant_vol, 
+    up_pattern_high_vol_threshold, down_pattern_high_vol_low_vol_threshold, down_pattern_down_vol_constant, 
+    down_pattern_high_vol_threshold, is_balance ,is_valid ,up_balance_time,min_discharge_vol_threshold,
+    low_floating_discharge_vol_threshold,low_floating_discharge_cur_threshold,
+    down_pattern_three_change_floating_cur,down_pattern_three_floating_cur_upper,balance_link_way
+  </sql>
+
+  <insert id="replaceSubDeviceBalanceConfigs" >
+    <foreach collection="list" item="item" separator=";">
+      insert into
+      subdevice_balance_config
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        gprs_id, rcv_time,
+        balance_subdevice_code, up_pattern_in_power,
+        up_pattern_out_vol, down_pattern_out_cur, down_pattern_out_vol,
+        up_pattern_low_vol_threshold, up_pattern_high_vol_constant_vol,
+        up_pattern_high_vol_threshold, down_pattern_high_vol_low_vol_threshold,
+        down_pattern_down_vol_constant, down_pattern_high_vol_threshold,
+        up_balance_time,min_discharge_vol_threshold,
+        low_floating_discharge_vol_threshold,low_floating_discharge_cur_threshold,
+        down_pattern_three_change_floating_cur,down_pattern_three_floating_cur_upper,
+        balance_link_way,
+      </trim>
+      values
+      <trim prefix="(" suffixOverrides="," suffix=")">
+        #{item.gprsId,jdbcType=VARCHAR}, #{item.rcvTime,jdbcType=TIMESTAMP},
+        #{item.balanceSubdeviceCode,jdbcType=TINYINT}, #{item.upPatternInPower,jdbcType=DECIMAL},
+        #{item.upPatternOutVol,jdbcType=DECIMAL}, #{item.downPatternOutCur,jdbcType=DECIMAL},
+        #{item.downPatternOutVol,jdbcType=DECIMAL},
+        #{item.upPatternLowVolThreshold,jdbcType=DECIMAL}, #{item.upPatternHighVolConstantVol,jdbcType=DECIMAL},
+        #{item.upPatternHighVolThreshold,jdbcType=DECIMAL}, #{item.downPatternHighVolLowVolThreshold,jdbcType=DECIMAL},
+        #{item.downPatternDownVolConstant,jdbcType=DECIMAL}, #{item.downPatternHighVolThreshold,jdbcType=DECIMAL},
+        #{item.upBalanceTime,jdbcType=DECIMAL},#{item.minDischargeVolThreshold,jdbcType=DECIMAL},
+        #{item.lowFloatingDischargeVolThreshold,jdbcType=DECIMAL},#{item.lowFloatingDischargeCurThreshold,jdbcType=DECIMAL},
+        #{item.downPatternThreeChangeFloatingCur,jdbcType=DECIMAL},#{item.downPatternThreeFloatingCurUpper,jdbcType=DECIMAL},
+        #{item.balanceLinkWay,jdbcType=INTEGER},
+      </trim>
+      ON DUPLICATE KEY UPDATE
+      <trim suffixOverrides=",">
+        gprs_id = #{item.gprsId,jdbcType=VARCHAR},
+        rcv_time = #{item.rcvTime,jdbcType=TIMESTAMP},
+        balance_subdevice_code = #{item.balanceSubdeviceCode,jdbcType=TINYINT},
+        up_pattern_in_power = #{item.upPatternInPower,jdbcType=DECIMAL},
+        up_pattern_out_vol = #{item.upPatternOutVol,jdbcType=DECIMAL},
+        down_pattern_out_cur = #{item.downPatternOutCur,jdbcType=DECIMAL},
+        down_pattern_out_vol = #{item.downPatternOutVol,jdbcType=DECIMAL},
+        up_pattern_low_vol_threshold = #{item.upPatternLowVolThreshold,jdbcType=DECIMAL},
+        up_pattern_high_vol_constant_vol = #{item.upPatternHighVolConstantVol,jdbcType=DECIMAL},
+        up_pattern_high_vol_threshold = #{item.upPatternHighVolThreshold,jdbcType=DECIMAL},
+        down_pattern_high_vol_low_vol_threshold = #{item.downPatternHighVolLowVolThreshold,jdbcType=DECIMAL},
+        down_pattern_down_vol_constant = #{item.downPatternDownVolConstant,jdbcType=DECIMAL},
+        down_pattern_high_vol_threshold = #{item.downPatternHighVolThreshold,jdbcType=DECIMAL},
+        up_balance_time = #{item.upBalanceTime,jdbcType=DECIMAL},
+        min_discharge_vol_threshold = #{item.minDischargeVolThreshold,jdbcType=DECIMAL},
+        low_floating_discharge_vol_threshold = #{item.lowFloatingDischargeVolThreshold,jdbcType=DECIMAL},
+        low_floating_discharge_cur_threshold = #{item.lowFloatingDischargeCurThreshold,jdbcType=DECIMAL},
+        down_pattern_three_change_floating_cur = #{item.downPatternThreeChangeFloatingCur,jdbcType=DECIMAL},
+        down_pattern_three_floating_cur_upper = #{item.downPatternThreeFloatingCurUpper,jdbcType=DECIMAL},
+        balance_link_way = #{item.balanceLinkWay,jdbcType=INTEGER},
+      </trim>
+    </foreach>
+  </insert>
+
+
+  <insert id="insertOrUpdateDeviceStatus" parameterType="com.walletech.po.SubDeviceBalanceConfig" >
+    <foreach collection="list" item="item" separator=";">
+      insert into
+      subdevice_balance_config
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        gprs_id, rcv_time,
+        balance_subdevice_code,is_valid,
+      </trim>
+      values
+      <trim prefix="(" suffixOverrides="," suffix=")">
+        #{item.gprsId,jdbcType=VARCHAR}, #{item.rcvTime,jdbcType=TIMESTAMP},
+        #{item.balanceSubdeviceCode,jdbcType=TINYINT}, #{item.isValid,jdbcType=INTEGER},
+      </trim>
+      ON DUPLICATE KEY UPDATE
+      <trim suffixOverrides=",">
+        gprs_id = #{item.gprsId,jdbcType=VARCHAR},
+        rcv_time = #{item.rcvTime,jdbcType=TIMESTAMP},
+        balance_subdevice_code = #{item.balanceSubdeviceCode,jdbcType=TINYINT},
+        is_valid = #{item.isValid,jdbcType=INTEGER},
+      </trim>
+    </foreach>
+  </insert>
+
+</mapper>

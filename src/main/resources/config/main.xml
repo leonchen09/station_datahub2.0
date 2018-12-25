@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder location="classpath:config/main.properties"  ignore-unresolvable="true"/>
+    <bean class="com.walletech.server.NettyServer" destroy-method="stop">
+        <property name="port" value="${netty.port}"/>
+        <property name="backLog" value="${netty.backlog}"/>
+        <property name="bossGroupNum" value="${netty.bossGroupNum}" />
+        <property name="workerGroupNum" value="${netty.workerGroupNum}"/>
+        <property name="readerIdleTime" value="${readerIdleTime}"/>
+    </bean>
+    <import resource="classpath:config/spring/application.xml"/>
+    <import resource="classpath:config/rabbit/rabbit.xml"/>
+</beans>

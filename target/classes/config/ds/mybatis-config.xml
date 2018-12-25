@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTO Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <!-- LOG4J 输出日志-->
+        <setting name="logImpl" value="LOG4J"/>
+        <setting name="mapUnderscoreToCamelCase" value="false"/>
+        <setting name="aggressiveLazyLoading" value="false"/>
+        <setting name="cacheEnabled" value="false"/>
+    </settings>
+    <typeAliases>
+        <typeAlias type="java.math.BigDecimal" alias="BigDecimal"/>
+        <typeAlias type="java.lang.Byte" alias="Byte"/>
+    </typeAliases>
+    <mappers>
+        <package name="com.walletech.dao.mapper"/>
+    </mappers>
+</configuration>

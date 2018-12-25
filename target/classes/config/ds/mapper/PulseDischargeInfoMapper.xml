@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.walletech.dao.mapper.PulseDischargeInfoMapper" >
+  <resultMap id="resultMap" type="com.walletech.po.PulseDischargeInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pulse_discharge_send_id" property="pulseDischargeSendId" jdbcType="INTEGER" />
+    <result column="voltage" property="voltage" jdbcType="VARCHAR" />
+    <result column="current" property="current" jdbcType="VARCHAR" />
+    <result column="impendance" property="impendance" jdbcType="DECIMAL" />
+    <result column="points_number" property="pointsNumber" jdbcType="INTEGER" />
+    <result column="filter_voltage" property="filterVoltage" jdbcType="LONGVARCHAR" />
+    <result column="filter_current" property="filterCurrent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, pulse_discharge_send_id, voltage, current, impendance, points_number
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="resultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from pulse_discharge_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from pulse_discharge_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insertPulseDischargeInfo" parameterType="com.walletech.po.PulseDischargeInfo" >
+    insert into pulse_discharge_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="pulseDischargeSendId != null" >
+        pulse_discharge_send_id,
+      </if>
+      <if test="voltage != null" >
+        voltage,
+      </if>
+      <if test="current != null" >
+        current,
+      </if>
+      <if test="impendance != null" >
+        impendance,
+      </if>
+      <if test="pointsNumber != null" >
+        points_number,
+      </if>
+      <if test="filterVoltage != null" >
+        filter_voltage,
+      </if>
+      <if test="filterCurrent != null" >
+        filter_current,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="pulseDischargeSendId != null" >
+        #{pulseDischargeSendId,jdbcType=INTEGER},
+      </if>
+      <if test="voltage != null" >
+        #{voltage,jdbcType=VARCHAR},
+      </if>
+      <if test="current != null" >
+        #{current,jdbcType=VARCHAR},
+      </if>
+      <if test="impendance != null" >
+        #{impendance,jdbcType=DECIMAL},
+      </if>
+      <if test="pointsNumber != null" >
+        #{pointsNumber,jdbcType=INTEGER},
+      </if>
+      <if test="filterVoltage != null" >
+        #{filterVoltage,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="filterCurrent != null" >
+        #{filterCurrent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.walletech.po.PulseDischargeInfo" >
+    update pulse_discharge_info
+    <set >
+      <if test="pulseDischargeSendId != null" >
+        pulse_discharge_send_id = #{pulseDischargeSendId,jdbcType=INTEGER},
+      </if>
+      <if test="voltage != null" >
+        voltage = #{voltage,jdbcType=VARCHAR},
+      </if>
+      <if test="current != null" >
+        current = #{current,jdbcType=VARCHAR},
+      </if>
+      <if test="impendance != null" >
+        impendance = #{impendance,jdbcType=DECIMAL},
+      </if>
+      <if test="pointsNumber != null" >
+        points_number = #{pointsNumber,jdbcType=INTEGER},
+      </if>
+      <if test="filterVoltage != null" >
+        filter_voltage = #{filterVoltage,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="filterCurrent != null" >
+        filter_current = #{filterCurrent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+</mapper>

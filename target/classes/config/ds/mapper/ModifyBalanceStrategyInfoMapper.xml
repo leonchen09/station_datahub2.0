@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.walletech.dao.mapper.ModifyBalanceStrategyInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.walletech.po.ModifyBalanceStrategyInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="gprs_id" property="gprsId" jdbcType="VARCHAR" />
+    <result column="para1" property="para1" jdbcType="INTEGER" />
+    <result column="para2" property="para2" jdbcType="INTEGER" />
+    <result column="para3" property="para3" jdbcType="INTEGER" />
+    <result column="para4" property="para4" jdbcType="INTEGER" />
+    <result column="para5" property="para5" jdbcType="INTEGER" />
+    <result column="para6" property="para6" jdbcType="INTEGER" />
+    <result column="para7" property="para7" jdbcType="INTEGER" />
+    <result column="send_done" property="sendDone" jdbcType="TINYINT" />
+    <result column="send_time" property="sendTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, gprs_id, para1, para2, para3, para4, para5, para6, para7, send_done, send_time
+  </sql>
+  <select id="pollingModifyBalanceStrategy" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select t1.*
+    from modify_balance_strategy_send t1,gprs_connection_info t2
+      where t1.gprs_id = t2.gprs_id and t2.link_status = 1 and t2.server_num = #{serverNum} and t1.send_done = 0 group by t1.gprs_id
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from modify_balance_strategy_send
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.walletech.po.ModifyBalanceStrategyInfo" >
+    insert into modify_balance_strategy_send (id, gprs_id, para1, 
+      para2, para3, para4, 
+      para5, para6, para7, 
+      send_done, send_time)
+    values (#{id,jdbcType=INTEGER}, #{gprsId,jdbcType=VARCHAR}, #{para1,jdbcType=INTEGER}, 
+      #{para2,jdbcType=INTEGER}, #{para3,jdbcType=INTEGER}, #{para4,jdbcType=INTEGER}, 
+      #{para5,jdbcType=INTEGER}, #{para6,jdbcType=INTEGER}, #{para7,jdbcType=INTEGER}, 
+      #{sendDone,jdbcType=TINYINT}, #{sendTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.walletech.po.ModifyBalanceStrategyInfo" >
+    insert into modify_balance_strategy_send
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="gprsId != null" >
+        gprs_id,
+      </if>
+      <if test="para1 != null" >
+        para1,
+      </if>
+      <if test="para2 != null" >
+        para2,
+      </if>
+      <if test="para3 != null" >
+        para3,
+      </if>
+      <if test="para4 != null" >
+        para4,
+      </if>
+      <if test="para5 != null" >
+        para5,
+      </if>
+      <if test="para6 != null" >
+        para6,
+      </if>
+      <if test="para7 != null" >
+        para7,
+      </if>
+      <if test="sendDone != null" >
+        send_done,
+      </if>
+      <if test="sendTime != null" >
+        send_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="gprsId != null" >
+        #{gprsId,jdbcType=VARCHAR},
+      </if>
+      <if test="para1 != null" >
+        #{para1,jdbcType=INTEGER},
+      </if>
+      <if test="para2 != null" >
+        #{para2,jdbcType=INTEGER},
+      </if>
+      <if test="para3 != null" >
+        #{para3,jdbcType=INTEGER},
+      </if>
+      <if test="para4 != null" >
+        #{para4,jdbcType=INTEGER},
+      </if>
+      <if test="para5 != null" >
+        #{para5,jdbcType=INTEGER},
+      </if>
+      <if test="para6 != null" >
+        #{para6,jdbcType=INTEGER},
+      </if>
+      <if test="para7 != null" >
+        #{para7,jdbcType=INTEGER},
+      </if>
+      <if test="sendDone != null" >
+        #{sendDone,jdbcType=TINYINT},
+      </if>
+      <if test="sendTime != null" >
+        #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateModifyBalanceStrategyInfo" parameterType="com.walletech.po.ModifyBalanceStrategyInfo" >
+    update modify_balance_strategy_send
+    <set >
+      <if test="sendDone != null" >
+        send_done = #{sendDone,jdbcType=TINYINT},
+      </if>
+      <if test="sendTime != null" >
+        send_time = #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.walletech.po.ModifyBalanceStrategyInfo" >
+    update modify_balance_strategy_send
+    set gprs_id = #{gprsId,jdbcType=VARCHAR},
+      para1 = #{para1,jdbcType=INTEGER},
+      para2 = #{para2,jdbcType=INTEGER},
+      para3 = #{para3,jdbcType=INTEGER},
+      para4 = #{para4,jdbcType=INTEGER},
+      para5 = #{para5,jdbcType=INTEGER},
+      para6 = #{para6,jdbcType=INTEGER},
+      para7 = #{para7,jdbcType=INTEGER},
+      send_done = #{sendDone,jdbcType=TINYINT},
+      send_time = #{sendTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="checkTimeOut"  parameterType="com.walletech.po.ModifyBalanceStrategyInfo" resultMap="BaseResultMap">
+    select * from modify_balance_strategy_send
+    where id = #{id} and send_done = #{sendDone}
+  </select>
+</mapper>

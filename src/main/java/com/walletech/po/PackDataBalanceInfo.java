@@ -44,6 +44,12 @@ public class PackDataBalanceInfo {
 
     private Integer overcurrentTem;
 
+    private Integer boostHighPressureUnderpressure;
+
+    private Integer lowVolBatteryReverse;
+
+    private Integer hardwareError;
+
     private Integer upBalance;
 
     private Integer downBalance;
@@ -224,5 +230,27 @@ public class PackDataBalanceInfo {
         this.overcurrentTem = overcurrentTem;
     }
 
+    public Integer getBoostHighPressureUnderpressure() {
+        return boostHighPressureUnderpressure;
+    }
 
+    public void setBoostHighPressureUnderpressure(Integer boostHighPressureUnderpressure) {
+        this.boostHighPressureUnderpressure = boostHighPressureUnderpressure;
+    }
+
+    public Integer getLowVolBatteryReverse() {
+        return lowVolBatteryReverse;
+    }
+
+    public void setLowVolBatteryReverse(Integer lowVolBatteryReverse) {
+        this.lowVolBatteryReverse = lowVolBatteryReverse;
+    }
+
+    public Integer getHardwareError() {
+        return hardwareError;
+    }
+
+    public void setHardwareError(Integer hardwareError) {
+        this.hardwareError = hardwareError;
+    }
 }

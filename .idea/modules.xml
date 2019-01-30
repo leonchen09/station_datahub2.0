@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/OTA-Server.iml" filepath="$PROJECT_DIR$/OTA-Server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/datahub.iml" filepath="$PROJECT_DIR$/datahub.iml" />
     </modules>
   </component>
 </project>

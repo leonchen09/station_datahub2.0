@@ -206,7 +206,7 @@
         initiative_balance = #{initiativeBalance}
         where
         <if test="stationId == null">
-            station_id = -1 and gprs_id = #{gprsId}
+            station_id is null and gprs_id = #{gprsId}
         </if>
         <if test="stationId != null">
             station_id = #{stationId}
@@ -217,7 +217,7 @@
     <select id="checkInsertOrUpdate" parameterType="String" resultMap="latestResult">
         select * from
         <include refid="InfoLatest-TABLE"/>
-        where gprs_id = #{gprsId} and station_id = -1
+        where gprs_id = #{gprsId} and station_id is null
     </select>
 
 </mapper>

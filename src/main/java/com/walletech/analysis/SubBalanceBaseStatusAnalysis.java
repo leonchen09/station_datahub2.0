@@ -126,7 +126,7 @@ public class SubBalanceBaseStatusAnalysis implements Analysis {
      * @return
      */
     private Integer getUpSubBalanceStatus(byte data){
-        String pattern = ProtocolUtil.supplementZero(Integer.toBinaryString((int) data),3).substring(0,1);
+        String pattern = ProtocolUtil.supplementZero(Integer.toBinaryString((int) data),4).substring(1,2);
         return Integer.valueOf(pattern);
     }
 
@@ -147,14 +147,18 @@ public class SubBalanceBaseStatusAnalysis implements Analysis {
      * @return
      */
     private void setWarningInfo(PackDataBalanceInfo info,byte[] data){
-        String warning = ProtocolUtil.supplementZero(Integer.toBinaryString(ByteExchangeUtil.byteArraytoInt(data)),6);
-        char[] warnings = warning.toCharArray();
-        info.setOvercurrentWarn(Integer.valueOf(warnings[5]+""));
-        info.setUpHighVolWarn(Integer.valueOf(warnings[4]+""));
-        info.setUpLowVolWarn(Integer.valueOf(warnings[3]+""));
-        info.setDownHighVolWarn(Integer.valueOf(warnings[2]+""));
-        info.setDownLowVolWarn(Integer.valueOf(warnings[1]+""));
-        info.setOvercurrentTem(Integer.valueOf(warnings[0]+""));
+        String warning = ProtocolUtil.supplementZero(Integer.toBinaryString(ByteExchangeUtil.byteArraytoInt(data)),9);
+        String warningInfo = new StringBuffer(warning).reverse().toString();
+        char[] warnings = warningInfo.toCharArray();
+        info.setOvercurrentWarn(Integer.valueOf(warnings[0]+""));
+        info.setUpHighVolWarn(Integer.valueOf(warnings[1]+""));
+        info.setUpLowVolWarn(Integer.valueOf(warnings[2]+""));
+        info.setDownHighVolWarn(Integer.valueOf(warnings[3]+""));
+        info.setDownLowVolWarn(Integer.valueOf(warnings[4]+""));
+        info.setOvercurrentTem(Integer.valueOf(warnings[5]+""));
+        info.setBoostHighPressureUnderpressure(Integer.valueOf(warnings[6]+""));
+        info.setLowVolBatteryReverse(Integer.valueOf(warnings[7]+""));
+        info.setHardwareError(Integer.valueOf(warnings[8]+""));
     }
 
 }

@@ -10,9 +10,6 @@
    <context:component-scan base-package="com.walletech.server"/>
    <context:component-scan base-package="com.walletech.analysis" />
    <context:component-scan base-package="com.walletech.task" />
-   <context:component-scan base-package="com.walletech.sharding" />
-
-    <import resource="classpath:config/sharding-jdbc/sharding-jdbc.xml"/>
 
     <bean id="threadPoolTaskExecutor"
           class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
@@ -34,6 +31,41 @@
         </property>
     </bean>
 
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+          init-method="init" destroy-method="close">
+        <property name="driverClassName" value="${datasource.driverClassName}" />
+        <property name="url" value="${datasource.url}" />
+        <property name="username" value="${datasource.username}" />
+        <property name="password" value="${datasource.password}" />
+        <property name="filters" value="${datasource.filters}" />
+        <property name="connectionProperties" value="${datasource.connectionProperties}" />
+        <property name="initialSize" value="${datasource.initialSize}" />
+        <property name="minIdle" value="${datasource.minIdle}" />
+        <property name="maxActive" value="${datasource.maxActive}" />
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="${datasource.maxWait}" />
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis"
+                  value="${datasource.timeBetweenEvictionRunsMillis}" />
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis"
+                  value="${datasource.minEvictableIdleTimeMillis}" />
+        <property name="validationQuery" value="${datasource.validationQuery}" />
+        <property name="testWhileIdle" value="${datasource.testWhileIdle}" />
+        <property name="testOnBorrow" value="${datasource.testOnBorrow}" />
+        <property name="testOnReturn" value="${datasource.testOnReturn}" />
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+        <property name="poolPreparedStatements" value="${datasource.poolPreparedStatements}" />
+        <property name="maxPoolPreparedStatementPerConnectionSize"
+                  value="${datasource.maxPoolPreparedStatementPerConnectionSize}" />
+        <!-- 打开removeAbandoned功能 -->
+        <property name="removeAbandoned" value="${datasource.removeAbandoned}" />
+        <!-- 1800秒，也就是30分钟 -->
+        <property name="removeAbandonedTimeout" value="${datasource.removeAbandonedTimeout}" />
+        <!-- 关闭abanded连接时输出错误日志 -->
+        <property name="logAbandoned" value="${datasource.logAbandoned}" />
+    </bean>
+
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.walletech.dao.mapper" />
         <property name="sqlSessionTemplateBeanName" value="sqlSessionTemplate" />
@@ -42,7 +74,7 @@
         <constructor-arg index="0" ref="sqlSessionFactory" />
     </bean>
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="shardingDataSource" />
+        <property name="dataSource" ref="dataSource" />
         <property name="configuration">
             <bean class="org.apache.ibatis.session.Configuration">
                 <property name="mapUnderscoreToCamelCase" value="true"/>
@@ -52,7 +84,7 @@
     </bean>
 
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="shardingDataSource"/>
+        <property name="dataSource" ref="dataSource"/>
     </bean>
 
 

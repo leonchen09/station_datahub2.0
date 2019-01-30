@@ -76,7 +76,6 @@ public class ProtocolUtil {
      */
     public static Integer getStationId(String gprsId){
         Integer stationId = (Integer) RedisUtil.get("srv_battery_station_gatewayAndBackground_"+gprsId);
-        if (stationId == null) stationId = -1;
         return stationId;
     }
 

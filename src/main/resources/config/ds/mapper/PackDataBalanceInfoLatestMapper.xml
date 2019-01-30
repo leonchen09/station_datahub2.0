@@ -64,7 +64,7 @@
 
   <select id="checkInsertOrUpdate" resultMap="BaseResultMap" parameterType="String">
     select * from pack_data_balance_info_latest
-    where gprs_id = #{gprsId} and station_id = -1 limit 1
+    where gprs_id = #{gprsId} and station_id is null limit 1
   </select>
 
   <insert id="insertPackDataBalanceLatestInfos" >
@@ -211,7 +211,7 @@
       </trim>
       where
       <if test="list[0].stationId == null">
-        station_id = -1
+        station_id is null
       </if>
       <if test="list[0].stationId != null">
         station_id = #{list[0].stationId}
@@ -221,5 +221,6 @@
         #{item.gprsId}
       </foreach>
     </update>
+
 
 </mapper>

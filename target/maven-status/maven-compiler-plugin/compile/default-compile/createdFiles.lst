@@ -1,5 +1,6 @@
 com\walletech\queue\message\Message.class
 com\walletech\queue\Reciver.class
+com\walletech\util\RedisUtil$1.class
 com\walletech\dao\mapper\ModifyIPPortInfoMapper.class
 com\walletech\bo\SubpackageInfo.class
 com\walletech\util\ProtocolUtil.class
@@ -141,6 +142,7 @@ com\walletech\analysis\ConnectAddrReadAnalysis.class
 com\walletech\service\GprsDeviceSendService.class
 com\walletech\service\SubBalanceSupportService.class
 com\walletech\service\OnlineOfflineService.class
+com\walletech\util\RabbitMqCommon.class
 com\walletech\po\GprsStateSnapshot.class
 com\walletech\server\NettyServer.class
 com\walletech\analysis\TimeSyncAnalysis.class

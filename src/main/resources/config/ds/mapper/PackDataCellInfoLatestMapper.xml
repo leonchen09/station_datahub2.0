@@ -125,7 +125,7 @@
         </trim>
         where
         <if test="list[0].stationId == null">
-          station_id = -1
+          station_id is null
         </if>
         <if test="list[0].stationId != null">
           station_id = #{list[0].stationId}

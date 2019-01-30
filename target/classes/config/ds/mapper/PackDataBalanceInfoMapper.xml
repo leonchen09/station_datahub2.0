@@ -22,13 +22,17 @@
     <result column="down_high_vol_warn" property="downHighVolWarn" jdbcType="INTEGER" />
     <result column="down_low_vol_warn" property="downLowVolWarn" jdbcType="INTEGER" />
     <result column="overcurrent_tem" property="overcurrentTem" jdbcType="INTEGER" />
+    <result column="hardware_error" property="hardwareError" jdbcType="INTEGER"/>
+    <result column="boost_high_pressure_underpressure" property="boostHighPressureUnderpressure" jdbcType="INTEGER"/>
+    <result column="low_vol_battery_reverse" property="lowVolBatteryReverse" jdbcType="INTEGER"/>
     <result column="up_balance" property="upBalance" jdbcType="INTEGER" />
     <result column="down_balance" property="downBalance" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, station_id, gprs_id, rcv_time, balance_subdevice_code, low_vol, high_vol, low_cur, 
     high_cur, low_power, high_power, power_tem, current_pattern, current_status, overcurrent_warn, 
-    up_high_vol_warn, up_low_vol_warn, down_high_vol_warn, down_low_vol_warn, overcurrent_tem, 
+    up_high_vol_warn, up_low_vol_warn, down_high_vol_warn, down_low_vol_warn, overcurrent_tem,
+    low_vol_battery_reverse,boost_high_pressure_underpressure,hardware_error
     up_balance,down_balance
   </sql>
 
@@ -42,7 +46,8 @@
       low_power, high_power, power_tem, 
       current_pattern, current_status, overcurrent_warn, 
       up_high_vol_warn, up_low_vol_warn, down_high_vol_warn, 
-      down_low_vol_warn, overcurrent_tem, up_balance , down_balance
+      down_low_vol_warn, overcurrent_tem,boost_high_pressure_underpressure,
+      low_vol_battery_reverse,hardware_error,up_balance , down_balance
     </trim>
     values
     <foreach collection="list" item="item" separator=",">
@@ -56,8 +61,9 @@
         #{item.currentStatus,jdbcType=INTEGER}, #{item.overcurrentWarn,jdbcType=INTEGER},
         #{item.upHighVolWarn,jdbcType=INTEGER}, #{item.upLowVolWarn,jdbcType=INTEGER},
         #{item.downHighVolWarn,jdbcType=INTEGER}, #{item.downLowVolWarn,jdbcType=INTEGER},
-        #{item.overcurrentTem,jdbcType=INTEGER}, #{item.upBalance,jdbcType=INTEGER},
-        #{item.downBalance,jdbcType=INTEGER}
+        #{item.overcurrentTem,jdbcType=INTEGER}, #{item.boostHighPressureUnderpressure,jdbcType=INTEGER},
+        #{item.lowVolBatteryReverse,jdbcType=INTEGER},#{item.hardwareError,jdbcType=INTEGER},
+        #{item.upBalance,jdbcType=INTEGER},#{item.downBalance,jdbcType=INTEGER}
       </trim>
     </foreach>
   </insert>

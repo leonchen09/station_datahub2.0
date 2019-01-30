@@ -58,7 +58,7 @@ public class DeviceStatusService {
             infoMapper.insertInfo(packDataInfo);
             for (PackDataCellInfo cellInfo : packDataCellInfoList) {
                 cellInfo.setPackDataInfoId(packDataInfo.getId());
-                cellInfo.setStationId(stationId);
+                cellInfo.setStationId(packDataInfo.getStationId());
             }
 
             int count = packDataInfoLatestMapper.updateInfoLatest(packDataInfo);

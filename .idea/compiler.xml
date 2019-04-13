@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="datahub" target="7" />
+      <module name="datahub" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

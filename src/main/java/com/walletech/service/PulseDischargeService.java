@@ -22,6 +22,9 @@ public class PulseDischargeService {
             PulseDischargeInfo pulseDischargeInfo = message.getPulseDischargeInfo();
             PulseCMDInfo pulseCMDInfo = message.getPulseCMDInfo();
             String gprsId = pulseCMDInfo.getGprsId();
+            //清空电压，电流数据，节省数据库空间。
+//            pulseDischargeInfo.setCurrent(null);
+//            pulseDischargeInfo.setVoltage(null);
             pulseDischargeInfoMapper.insertPulseDischargeInfo(pulseDischargeInfo);
             pulseDischargeCMDMapper.updatePulseCMDStatus(pulseCMDInfo);
             CacheUtil.removePulseCMDInfo(gprsId);

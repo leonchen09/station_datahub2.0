@@ -67,6 +67,9 @@ public class ACKAnalysis implements Analysis {
             case (byte) 0x32: //均衡从机均衡开关应答
                 doSubBalanceStatus(data,gprsId);
                 break;
+            case (byte)0x35: //核容指令应答
+                doVerifyCapacity(data, gprsId);
+                break;
             default:
                 logger.info("[{}]未知应答 [{}]",gprsId,StringUtil.toHexString(data));
         }
@@ -469,4 +472,32 @@ public class ACKAnalysis implements Analysis {
         sender.saveMessage(message);
     }
 
+    /**
+     * 处理核容指令应答
+     * @param data
+     * @param gprsId
+     */
+    private void doVerifyCapacity(byte[] data,String gprsId){
+        VerifyCapacity info = CacheUtil.getVerifyCapacity(gprsId);
+        if (info ==null){
+            return;
+        }
+        switch (data[DATA_OFFSET+1]){
+            case (byte) 0x80:
+                logger.info("[{}]核容指令成功",gprsId);
+                info.setSendDone((byte) 2);
+                break;
+            case (byte) 0x01:
+                logger.warn("[{}]核容指令失败",gprsId);
+                info.setSendDone((byte) 3);
+                break;
+            default:
+                info.setSendDone((byte) 3);
+                logger.warn("未知错误 [{}]核容指令失败 应答：[{}]",gprsId,StringUtil.toHexString(data));
+        }
+        VerifyCapacityACKMessage message = new VerifyCapacityACKMessage();
+        message.setVerifyCapacity(info);
+        message.setType(DataType.VERIFY_CAPACITY_ACK);
+        sender.saveMessage(message);
+    }
 }

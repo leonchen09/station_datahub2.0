@@ -50,6 +50,8 @@ public class PollingTask {
     private SubBalanceControlService subBalanceControlService;
     @Autowired
     private GprsRestartService gprsRestartService;
+    @Autowired
+    private VerifyCapacityService verifyCapacityService;
 
     public void start(){
         if (checkTime <= 0){
@@ -64,6 +66,7 @@ public class PollingTask {
                 modifyGprsIdService.checkTimeOut(); //修改ID超时检查
                 subBalanceConfigSendService.checkTimeOut(); //均衡从机均衡参数配置超时检查
                 subBalanceControlService.checkTimeOut(); //均衡从机状态控制超时检查
+                verifyCapacityService.checkTimeOut();//核容指令超时检查
                 if (mqFlag!=1){
                     pulseCMDService.pollingPulseCMD(); //脉冲命令
                     gprsDeviceSendService.pollingGprsDeviceSendInfo(); //参数配置命令
@@ -73,6 +76,7 @@ public class PollingTask {
                     modifyGprsIdService.pollingModifyGprsId(); //修改设备(主机/从机)ID命令
                     subBalanceConfigSendService.pollingSubBalanceConfigSend(); //均衡从机均衡参数配置
                     subBalanceControlService.pollingSubBalanceStatusSend(); //均衡从机状态控制
+                    verifyCapacityService.pollingVerifyCapacity();//核容指令
                 }
                 gprsDeviceReadService.pollingGprsDeviceReadInfo(); //参数读取命令
 //                modifyIPPortService.pollingModifyIPPort(); //修改连接IP&Port命令

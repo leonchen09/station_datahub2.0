@@ -42,6 +42,8 @@ public class CacheUtil {
     private static final ConcurrentHashMap<String,SubBalanceConfigSend> SUB_BALANCE_CONFIG_SEND_MAP = new ConcurrentHashMap<>();
     //保存发送的均衡从机状态修改指令
     private static final ConcurrentHashMap<String,SubBalanceStatusSend> SUB_BALANCE_STATUS_SEND_MAP = new ConcurrentHashMap<>();
+    //保存正在处理的核容指令 key:gprsId
+    private static final ConcurrentHashMap<String,VerifyCapacity> VERIFY_CAPACITY_MAP = new ConcurrentHashMap<>();
     /**
      * 保存分包数据信息 (集群部署修改部分)
      * @param gprsId
@@ -258,7 +260,33 @@ public class CacheUtil {
         return gprsStateSnapshot;
     }
 
+    /**
+     * 获取电池核容指令信息 (集群部署修改部分)
+     * @param gprsId
+     * @return
+     */
+    public static VerifyCapacity getVerifyCapacity(String gprsId){
+        return VERIFY_CAPACITY_MAP.get(gprsId);
+    }
+    /**
+     * 删除电池核容指令信息 (集群部署修改部分)
+     * @param gprsId
+     */
+    public static void removeVerifyCapacity(String gprsId){
+        VERIFY_CAPACITY_MAP.remove(gprsId);
+    }
+    /**
+     * 保存电池核容指令信息 (集群部署修改部分)
+     * @param gprsId
+     * @param info
+     */
+    public static void putVerifyCapacity(String gprsId , VerifyCapacity info){
+        VERIFY_CAPACITY_MAP.put(gprsId,info);
+    }
 
+    public static ConcurrentHashMap<String, VerifyCapacity> getVerifyCapacityMap(){
+        return VERIFY_CAPACITY_MAP;
+    }
 
     public static ConcurrentHashMap<String, GprsConnectionInfo> getGprsMap() {
         return GPRS_MAP;

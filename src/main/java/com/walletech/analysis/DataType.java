@@ -108,4 +108,8 @@ public interface DataType {
      * 均衡从机均衡状态修改ACK
      */
     String SUB_BALANCE_STATUS_ACK = "subBalanceStatusACK";
+    /**
+     * 核容指令应答
+     */
+    String VERIFY_CAPACITY_ACK = "verifyCapacityACK";
 }

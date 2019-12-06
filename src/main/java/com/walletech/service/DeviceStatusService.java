@@ -70,6 +70,7 @@ public class DeviceStatusService {
             RedisUtil.setBytes("srv_station_packDataCellInfoLatest_"+gprsId,cellInfos);
 
         } catch (Exception e) {
+            e.printStackTrace();
             throw new QueueException(e.getMessage(), e);
         }
     }

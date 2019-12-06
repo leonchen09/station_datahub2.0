@@ -83,6 +83,14 @@ public class DeviceStatusTransAnalysis implements Analysis {
         packDataInfo.setSoc(new BigDecimal(data[3+DATA_OFFSET]));
         packDataInfo.setPassiveBalance(passiveBalance(batteryStatus));
         packDataInfo.setInitiativeBalance(activeBalance(batteryStatus));
+        if(data.length > DATA_LENGTH) {//加bcc位，长度超过105，表示有后续值传递。
+            packDataInfo.setSwitchVol(analysisVol(data, 94));//开关电压
+            packDataInfo.setbGenVol(analysisVol(data, 98));//B路电压
+            packDataInfo.setbGenCur(analysisCur(data,100));//B路电流
+            packDataInfo.setcGenVol(analysisVol(data, 104));//C路电压
+            packDataInfo.setcGenCur(analysisCur(data, 106));//c路电流
+            analysisVerifyStatus(data, packDataInfo);
+        }
         return packDataInfo;
     }
 
@@ -154,6 +162,99 @@ public class DeviceStatusTransAnalysis implements Analysis {
         byte[] genVol = new byte[2];
         System.arraycopy(data,89+DATA_OFFSET,genVol,0,2);
         return new BigDecimal(ByteExchangeUtil.byteArraytoInt(genVol)).multiply(DECIMAL_10).divide(DECIMAL_1000);
+    }
+
+    /**
+     * 电源电压
+     * @param data
+     * @return
+     */
+    private BigDecimal analysisVol(byte[] data, int scrPos){
+        byte[] genVol = new byte[2];
+        System.arraycopy(data,scrPos + DATA_OFFSET,genVol,0,2);
+        return new BigDecimal(ByteExchangeUtil.byteArraytoInt(genVol)).multiply(DECIMAL_10).divide(DECIMAL_1000);
+    }
+    /**
+     * 获取电流，数据帧偏移量<p>DATA_OFFSET</p>
+     * 电流数据占<p>2</p>字节
+     * （服务器解析时要用300减去接收的值）
+     * 例：主机电流为5A，主机发送的值为 300-5，
+     * 服务器解析时300-(300-5) = 5A
+     * @return
+     */
+    private BigDecimal analysisCur(byte[] data, int scrPos){
+        byte[] genCur = new byte[2];
+        System.arraycopy(data,scrPos + DATA_OFFSET,genCur,0,2);
+        return new BigDecimal(30000-ByteExchangeUtil.byteArraytoInt(genCur)).multiply(DECIMAL_10).divide(DECIMAL_1000);
+    }
+
+    /**
+     * 设置核容状态
+     * Bit0:锂电池在线状态；
+     * Bit1:铅酸接触器状态：0：断开；1：闭合；
+     * Bit2:锂电池接触器状态：0：断开；1：闭合；
+     * Bit3:核容状态；0：正常；1：故障；
+     * Bit4:虚拟电源状态；0：断开；1：闭合；
+     * Bit5:核容状态；0：未核容；1：正在核容；
+     * Bit6~Bit8:核容从机状态；
+     * @param data
+     * @param packDataInfo
+     */
+    private void analysisVerifyStatus(byte[] data, PackDataInfo packDataInfo){
+        String aStatus = getVerifyStatus(data, 96);//a路状态
+        //Bit0：A路电池在线状态；0：不在线；1：在线；
+        packDataInfo.setaOnline((byte)Integer.parseInt(aStatus.substring(0, 1)));
+        //Bit1：A路接触器状态：  0：断开；1：闭合；
+        packDataInfo.setaContactStatus((byte)Integer.parseInt(aStatus.substring(1, 2)));
+        //Bit2：A路故障状态；    0：正常；1：故障；
+        packDataInfo.setaError((byte)Integer.parseInt(aStatus.substring(2, 3)));
+        //Bit3：A路核容状态；    0：未核容；1：正在核容；
+        packDataInfo.setaVerifyStatus((byte)Integer.parseInt(aStatus.substring(3, 4)));
+        //Bit4~Bit6: A路工作模式；取值范围：0~7；
+        packDataInfo.setaMode((byte)Integer.parseInt(aStatus.substring(4, 7), 2));
+        //Bit7：A路复位标志；    0：未复位；1：复位；
+        packDataInfo.setaReset((byte)Integer.parseInt(aStatus.substring(7, 8)));
+        //Bit8~Bit10：A路故障码；故障码定义：
+        packDataInfo.setaErrorCode((byte)Integer.parseInt(aStatus.substring(8, 11), 2));
+
+        String bStatus = getVerifyStatus(data, 102);//b路状态
+        //Bit0：A路电池在线状态；0：不在线；1：在线；
+        packDataInfo.setbOnline((byte)Integer.parseInt(bStatus.substring(0, 1)));
+        //Bit1：A路接触器状态：  0：断开；1：闭合；
+        packDataInfo.setbContactStatus((byte)Integer.parseInt(bStatus.substring(1, 2)));
+        //Bit2：A路故障状态；    0：正常；1：故障；
+        packDataInfo.setbError((byte)Integer.parseInt(bStatus.substring(2, 3)));
+        //Bit3：A路核容状态；    0：未核容；1：正在核容；
+        packDataInfo.setbVerifyStatus((byte)Integer.parseInt(bStatus.substring(3, 4)));
+        //Bit4~Bit6: A路工作模式；取值范围：0~7；
+        packDataInfo.setbMode((byte)Integer.parseInt(bStatus.substring(4, 7), 2));
+        //Bit7：A路复位标志；    0：未复位；1：复位；
+        packDataInfo.setbReset((byte)Integer.parseInt(bStatus.substring(7, 8)));
+        //Bit8~Bit10：A路故障码；故障码定义：
+        packDataInfo.setbErrorCode((byte)Integer.parseInt(bStatus.substring(8, 11), 2));
+
+        String cStatus = getVerifyStatus(data, 108);//c路状态
+        //Bit0：A路电池在线状态；0：不在线；1：在线；
+        packDataInfo.setcOnline((byte)Integer.parseInt(cStatus.substring(0, 1)));
+        //Bit1：A路接触器状态：  0：断开；1：闭合；
+        packDataInfo.setcContactStatus((byte)Integer.parseInt(cStatus.substring(1, 2)));
+        //Bit2：A路故障状态；    0：正常；1：故障；
+        packDataInfo.setcError((byte)Integer.parseInt(cStatus.substring(2, 3)));
+        //Bit3：A路核容状态；    0：未核容；1：正在核容；
+        packDataInfo.setcVerifyStatus((byte)Integer.parseInt(cStatus.substring(3, 4)));
+        //Bit4~Bit6: A路工作模式；取值范围：0~7；
+        packDataInfo.setcMode((byte)Integer.parseInt(cStatus.substring(4, 7), 2));
+        //Bit7：A路复位标志；    0：未复位；1：复位；
+        packDataInfo.setcReset((byte)Integer.parseInt(cStatus.substring(7, 8)));
+        //Bit8~Bit10：A路故障码；故障码定义：
+        packDataInfo.setcErrorCode((byte)Integer.parseInt(cStatus.substring(8, 11), 2));
+
+    }
+
+    private String getVerifyStatus(byte[] data, int srcPos){
+        StringBuilder byteString = new StringBuilder(byteToBit(data[srcPos+DATA_OFFSET])).reverse();
+        byteString.append(new StringBuilder(byteToBit(data[srcPos + 1 + DATA_OFFSET])).reverse());
+        return byteString.toString();
     }
 
     /**

@@ -1,7 +1,11 @@
 package com.walletech.datahub;
 
+import com.walletech.po.PackDataInfo;
+import com.walletech.queue.message.DeviceStatusMessage;
 import com.walletech.server.NettyServer;
+import com.walletech.service.DeviceStatusService;
 import com.walletech.service.SystemStartService;
+import com.walletech.service.VerifyCapacityService;
 import com.walletech.task.GprsStateSnapshotTask;
 import com.walletech.task.PollingTask;
 import com.walletech.task.ResendMqMessageTask;
@@ -9,6 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * 程序启动类
@@ -35,4 +42,33 @@ public class DataHubApplication {
         server.start();
     }
 
+    private static void testPollVerify(){
+        VerifyCapacityService verifyCapacityService = context.getBean(VerifyCapacityService.class);
+        verifyCapacityService.pollingVerifyCapacity();
+    }
+
+    private static void testDeviceStatus(){
+        try{
+            PackDataInfo info = new PackDataInfo();
+            info.setbGenVol(new BigDecimal(9));
+            info.setcGenCur(new BigDecimal(9));
+            info.setaContactStatus((byte)9);
+            info.setcError((byte)9);
+            info.setbMode((byte)9);
+            info.setaReset((byte)1);
+            info.setGprsId("T0E999888");
+            info.setRcvTime(new Date());
+            info.setGenVol(new BigDecimal(49.99));
+            info.setState("测试");
+
+            DeviceStatusMessage message = new DeviceStatusMessage();
+            message.setPackDataInfo(info);
+
+            DeviceStatusService service = context.getBean(DeviceStatusService.class);
+            service.doService(message);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+    }
 }

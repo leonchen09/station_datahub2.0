@@ -15,6 +15,32 @@
         <result property="soc" column="soc" javaType="BigDecimal" jdbcType="DECIMAL"/>
         <result property="passiveBalance" column="passive_balance" javaType="Byte" jdbcType="TINYINT"/>
         <result property="initiativeBalance" column="initiative_balance" javaType="Byte" jdbcType="TINYINT"/>
+        <result property="switchVol" column="switch_vol" javaType="BigDecimal" jdbcType="DECIMAL"/>
+        <result property="aOnline" column="aonline" javaType="Byte" jdbcType="TINYINT"/>
+        <result property="aContactStatus" column="acontactstatus" javaType="Byte" jdbcType="TINYINT"/>
+        <result property="aError" column="aerror" javaType="Byte" jdbcType="TINYINT"/>
+        <result property="aVerifyStatus" column="averifystatus" javaType="Byte" jdbcType="TINYINT"/>
+        <result property="aMode" column="amode" javaType="Byte" jdbcType="TINYINT"/>
+        <result property="aErrorCode" column="aerrorcode" javaType="Byte" jdbcType="TINYINT"/>
+        <result property="bGenVol" column="bgenvol" javaType="BigDecimal" jdbcType="DECIMAL"/>
+        <result property="bGenCur" column="bgencur" javaType="BigDecimal" jdbcType="DECIMAL"/>
+        <result property="bOnline" column="bonline" javaType="Byte" jdbcType="TINYINT"/>
+        <result property="bContactStatus" column="bcontactstatus" javaType="Byte" jdbcType="TINYINT"/>
+        <result property="bError" column="berror" javaType="Byte" jdbcType="TINYINT"/>
+        <result property="bVerifyStatus" column="bverifystatus" javaType="Byte" jdbcType="TINYINT"/>
+        <result property="bMode" column="bmode" javaType="Byte" jdbcType="TINYINT"/>
+        <result property="bErrorCode" column="berrorcode" javaType="Byte" jdbcType="TINYINT"/>
+        <result property="cGenVol" column="cgenvol" javaType="BigDecimal" jdbcType="DECIMAL"/>
+        <result property="cGenCur" column="cgencur" javaType="BigDecimal" jdbcType="DECIMAL"/>
+        <result property="cOnline" column="conline" javaType="Byte" jdbcType="TINYINT"/>
+        <result property="cContactStatus" column="ccontactstatus" javaType="Byte" jdbcType="TINYINT"/>
+        <result property="cError" column="cerror" javaType="Byte" jdbcType="TINYINT"/>
+        <result property="cVerifyStatus" column="cverifystatus" javaType="Byte" jdbcType="TINYINT"/>
+        <result property="cMode" column="cmode" javaType="Byte" jdbcType="TINYINT"/>
+        <result property="cErrorCode" column="cerrorcode" javaType="Byte" jdbcType="TINYINT"/>
+        <result property="aReset" column="areset" javaType="Byte" jdbcType="TINYINT"/>
+        <result property="bReset" column="breset" javaType="Byte" jdbcType="TINYINT"/>
+        <result property="cReset" column="creset" javaType="Byte" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Info-TABLE">
@@ -22,7 +48,11 @@
     </sql>
 
     <sql id="info_all_columns">
-        id,gprs_id,station_id,rcv_time,state,gen_vol,gen_cur,environ_tem,soc,passive_balance,initiative_balance
+        id,gprs_id,station_id,rcv_time,state,gen_vol,gen_cur,environ_tem,soc,passive_balance,initiative_balance,
+        switch_vol,aonline,acontactstatus,aerror,averifystatus,amode,aerrorcode,
+        bgenvol,bgencur,bonline,bcontactstatus,berror,bverifystatus,bmode,berrorcode,
+        cgenvol,cgencur,conline,ccontactstatus,cerror,cverifystatus,cmode,cerrorcode,
+        areset,breset,creset
     </sql>
 
     <insert id="insertInfo" useGeneratedKeys="true" keyProperty="id">
@@ -57,7 +87,85 @@
                 passive_balance,
             </if>
             <if test="initiativeBalance != null ">
-                initiative_balance
+                initiative_balance,
+            </if>
+            <if test="switchVol != null ">
+                switch_vol,
+            </if>
+            <if test="aOnline != null ">
+                aonline,
+            </if>
+            <if test="aContactStatus != null">
+                acontactstatus,
+            </if>
+            <if test="aError != null ">
+                aerror,
+            </if>
+            <if test="aVerifyStatus != null ">
+                averifystatus,
+            </if>
+            <if test="aMode != null ">
+                amode,
+            </if>
+            <if test="aErrorCode != null ">
+                aerrorcode,
+            </if>
+            <if test="bGenVol != null ">
+                bgenvol,
+            </if>
+            <if test="bGenCur != null">
+                bgencur,
+            </if>
+            <if test="bOnline != null ">
+                bonline,
+            </if>
+            <if test="bContactStatus != null ">
+                bcontactstatus,
+            </if>
+            <if test="bError != null ">
+                berror,
+            </if>
+            <if test="bVerifyStatus != null ">
+                bverifystatus,
+            </if>
+            <if test="bMode != null ">
+                bmode,
+            </if>
+            <if test="bErrorCode != null ">
+                berrorcode,
+            </if>
+            <if test="cGenVol != null ">
+                cgenvol,
+            </if>
+            <if test="cGenCur != null">
+                cgencur,
+            </if>
+            <if test="cOnline != null ">
+                conline,
+            </if>
+            <if test="cContactStatus != null ">
+                ccontactstatus,
+            </if>
+            <if test="cError != null ">
+                cerror,
+            </if>
+            <if test="cVerifyStatus != null ">
+                cverifystatus,
+            </if>
+            <if test="cMode != null ">
+                cmode,
+            </if>
+            <if test="cErrorCode != null ">
+                cerrorcode,
+            </if>
+            <if test="aReset != null ">
+                areset,
+            </if>
+            <if test="bReset != null ">
+                breset,
+            </if>
+            <if test="cReset != null ">
+                creset
             </if>
         </trim>
         <trim prefix="values(" suffixOverrides="," suffix=")">
@@ -89,7 +197,85 @@
                 #{passiveBalance},
             </if>
             <if test="initiativeBalance != null ">
-                #{initiativeBalance}
+                #{initiativeBalance},
+            </if>
+            <if test="switchVol != null ">
+                #{switchVol},
+            </if>
+            <if test="aOnline != null ">
+                #{aOnline},
+            </if>
+            <if test="aContactStatus != null">
+                #{aContactStatus},
+            </if>
+            <if test="aError != null ">
+                #{aError},
+            </if>
+            <if test="aVerifyStatus != null ">
+                #{aVerifyStatus},
+            </if>
+            <if test="aMode != null ">
+                #{aMode},
+            </if>
+            <if test="aErrorCode != null ">
+                #{aErrorCode},
+            </if>
+            <if test="bGenVol != null ">
+                #{bGenVol},
+            </if>
+            <if test="bGenCur != null">
+                #{bGenCur},
+            </if>
+            <if test="bOnline != null ">
+                #{bOnline},
+            </if>
+            <if test="bContactStatus != null ">
+                #{bContactStatus},
+            </if>
+            <if test="bError != null ">
+                #{bError},
+            </if>
+            <if test="bVerifyStatus != null ">
+                #{bVerifyStatus},
+            </if>
+            <if test="bMode != null ">
+                #{bMode},
+            </if>
+            <if test="bErrorCode != null ">
+                #{bErrorCode},
+            </if>
+            <if test="cGenVol != null ">
+                #{cGenVol},
+            </if>
+            <if test="cGenCur != null">
+                #{cGenCur},
+            </if>
+            <if test="cOnline != null ">
+                #{cOnline},
+            </if>
+            <if test="cContactStatus != null ">
+                #{cContactStatus},
+            </if>
+            <if test="cError != null ">
+                #{cError},
+            </if>
+            <if test="cVerifyStatus != null ">
+                #{cVerifyStatus},
+            </if>
+            <if test="cMode != null ">
+                #{cMode},
+            </if>
+            <if test="cErrorCode != null ">
+                #{cErrorCode},
+            </if>
+            <if test="aReset != null ">
+                #{aReset},
+            </if>
+            <if test="bReset != null ">
+                #{bReset},
+            </if>
+            <if test="cReset != null ">
+                #{cReset}
             </if>
         </trim>
     </insert>

@@ -78,8 +78,9 @@ public class VerifyCapacityService {
                 logger.warn("设备[{}]已离线，核容指令发送失败",gprsId);
                 return false;
             }
-            byte[] request = new byte[5];
-            request[3] = info.getCmd().byteValue();
+            byte[] request = new byte[6];
+            request[3] = 0x35;//核容
+            request[4] = info.getCmd().byteValue();
             request = ProtocolUtil.beforeSend(request);
             ByteBuf buf = channel.alloc().directBuffer(5);
             buf.writeBytes(request);

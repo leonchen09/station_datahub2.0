@@ -45,6 +45,8 @@ public class DataHubApplication {
     private static void testPollVerify(){
         VerifyCapacityService verifyCapacityService = context.getBean(VerifyCapacityService.class);
         verifyCapacityService.pollingVerifyCapacity();
+        System.out.println(Integer.toBinaryString(9));
+        System.out.println(Integer.parseInt("01011",2));
     }
 
     private static void testDeviceStatus(){

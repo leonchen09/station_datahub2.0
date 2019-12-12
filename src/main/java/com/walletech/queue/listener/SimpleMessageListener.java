@@ -78,6 +78,8 @@ public class SimpleMessageListener implements MessageListener {
     private SubBalanceSupportService subBalanceSupportService;
     @Autowired
     private SubBalanceControlService subBalanceControlService;
+    @Autowired
+    private VerifyCapacityService verifyCapacityService;
 
     @Override
     public void onMessage(final Message message) {
@@ -187,6 +189,9 @@ public class SimpleMessageListener implements MessageListener {
                             SubBalanceStatusACKMessage subBalanceStatusACKMessage = (SubBalanceStatusACKMessage) message;
                             subBalanceControlService.doService(subBalanceStatusACKMessage);
                             break;
+                        case DataType.VERIFY_CAPACITY_ACK:
+                            VerifyCapacityACKMessage verifyCapacityACKMessage = (VerifyCapacityACKMessage) message;
+                            verifyCapacityService.doService(verifyCapacityACKMessage);
                         default:
                             logger.warn("消息类型不匹配!");
                     }

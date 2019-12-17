@@ -9,6 +9,7 @@ import com.walletech.service.VerifyCapacityService;
 import com.walletech.task.GprsStateSnapshotTask;
 import com.walletech.task.PollingTask;
 import com.walletech.task.ResendMqMessageTask;
+import com.walletech.util.ByteExchangeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -40,6 +41,13 @@ public class DataHubApplication {
         //启动数据网关
         NettyServer server = context.getBean(NettyServer.class);
         server.start();
+    }
+
+    private static void testByte(){
+        Integer a = 128;
+        byte by = a.byteValue();
+        byte[] byts = ByteExchangeUtil.intToUInt16Bytes(127);
+//        System.out.println();
     }
 
     private static void testPollVerify(){

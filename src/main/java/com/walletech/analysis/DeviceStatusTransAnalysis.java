@@ -32,6 +32,7 @@ public class DeviceStatusTransAnalysis implements Analysis {
 
     private static final int CELL_VOL_DATA_SIZE = 2;
     private static final int DATA_LENGTH = 105;
+    private static final int FULL_DATA_LENGTH = 121;
     private static final int DATA_OFFSET = 10;
     private static final BigDecimal DECIMAL_1000 = new BigDecimal(1000);
     private static final BigDecimal DECIMAL_10 = new BigDecimal(10);
@@ -84,6 +85,10 @@ public class DeviceStatusTransAnalysis implements Analysis {
         packDataInfo.setPassiveBalance(passiveBalance(batteryStatus));
         packDataInfo.setInitiativeBalance(activeBalance(batteryStatus));
         if(data.length > DATA_LENGTH) {//加bcc位，长度超过105，表示有后续值传递。
+            if (data.length < FULL_DATA_LENGTH){
+                logger.warn("设备[{}]状态数据(2)长度异常:[{}]",gprsId,StringUtil.toHexString(data));
+                return packDataInfo;
+            }
             packDataInfo.setSwitchVol(analysisVol(data, 94));//开关电压
             packDataInfo.setbGenVol(analysisVol(data, 98));//B路电压
             packDataInfo.setbGenCur(analysisCur(data,100));//B路电流
@@ -202,6 +207,7 @@ public class DeviceStatusTransAnalysis implements Analysis {
      */
     private void analysisVerifyStatus(byte[] data, PackDataInfo packDataInfo){
         String aStatus = getVerifyStatus(data, 96);//a路状态
+        logger.info("设备[{}]a路状态：[{}]", packDataInfo.getGprsId(), aStatus);
         //Bit0：A路电池在线状态；0：不在线；1：在线；
         packDataInfo.setaOnline((byte)Integer.parseInt(aStatus.substring(0, 1)));
         //Bit1：A路接触器状态：  0：断开；1：闭合；
@@ -211,13 +217,14 @@ public class DeviceStatusTransAnalysis implements Analysis {
         //Bit3：A路核容状态；    0：未核容；1：正在核容；
         packDataInfo.setaVerifyStatus((byte)Integer.parseInt(aStatus.substring(3, 4)));
         //Bit4~Bit6: A路工作模式；取值范围：0~7；
-        packDataInfo.setaMode((byte)Integer.parseInt(aStatus.substring(4, 7), 2));
+        packDataInfo.setaMode((byte)Integer.parseInt(new StringBuilder(aStatus.substring(4, 7)).reverse().toString(), 2));
         //Bit7：A路复位标志；    0：未复位；1：复位；
         packDataInfo.setaReset((byte)Integer.parseInt(aStatus.substring(7, 8)));
         //Bit8~Bit10：A路故障码；故障码定义：
-        packDataInfo.setaErrorCode((byte)Integer.parseInt(aStatus.substring(8, 11), 2));
+        packDataInfo.setaErrorCode((byte)Integer.parseInt(new StringBuilder(aStatus.substring(8, 11)).reverse().toString(), 2));
 
         String bStatus = getVerifyStatus(data, 102);//b路状态
+        logger.info("设备[{}]b路状态：[{}]", packDataInfo.getGprsId(), bStatus);
         //Bit0：A路电池在线状态；0：不在线；1：在线；
         packDataInfo.setbOnline((byte)Integer.parseInt(bStatus.substring(0, 1)));
         //Bit1：A路接触器状态：  0：断开；1：闭合；
@@ -227,13 +234,14 @@ public class DeviceStatusTransAnalysis implements Analysis {
         //Bit3：A路核容状态；    0：未核容；1：正在核容；
         packDataInfo.setbVerifyStatus((byte)Integer.parseInt(bStatus.substring(3, 4)));
         //Bit4~Bit6: A路工作模式；取值范围：0~7；
-        packDataInfo.setbMode((byte)Integer.parseInt(bStatus.substring(4, 7), 2));
+        packDataInfo.setbMode((byte)Integer.parseInt(new StringBuilder(bStatus.substring(4, 7)).reverse().toString(), 2));
         //Bit7：A路复位标志；    0：未复位；1：复位；
         packDataInfo.setbReset((byte)Integer.parseInt(bStatus.substring(7, 8)));
         //Bit8~Bit10：A路故障码；故障码定义：
-        packDataInfo.setbErrorCode((byte)Integer.parseInt(bStatus.substring(8, 11), 2));
+        packDataInfo.setbErrorCode((byte)Integer.parseInt(new StringBuilder(bStatus.substring(8, 11)).reverse().toString(), 2));
 
         String cStatus = getVerifyStatus(data, 108);//c路状态
+        logger.info("设备[{}]c路状态：[{}]", packDataInfo.getGprsId(), cStatus);
         //Bit0：A路电池在线状态；0：不在线；1：在线；
         packDataInfo.setcOnline((byte)Integer.parseInt(cStatus.substring(0, 1)));
         //Bit1：A路接触器状态：  0：断开；1：闭合；
@@ -243,17 +251,18 @@ public class DeviceStatusTransAnalysis implements Analysis {
         //Bit3：A路核容状态；    0：未核容；1：正在核容；
         packDataInfo.setcVerifyStatus((byte)Integer.parseInt(cStatus.substring(3, 4)));
         //Bit4~Bit6: A路工作模式；取值范围：0~7；
-        packDataInfo.setcMode((byte)Integer.parseInt(cStatus.substring(4, 7), 2));
+        packDataInfo.setcMode((byte)Integer.parseInt(new StringBuilder(cStatus.substring(4, 7)).reverse().toString(), 2));
         //Bit7：A路复位标志；    0：未复位；1：复位；
         packDataInfo.setcReset((byte)Integer.parseInt(cStatus.substring(7, 8)));
         //Bit8~Bit10：A路故障码；故障码定义：
-        packDataInfo.setcErrorCode((byte)Integer.parseInt(cStatus.substring(8, 11), 2));
+        packDataInfo.setcErrorCode((byte)Integer.parseInt(new StringBuilder(cStatus.substring(8, 11)).reverse().toString(), 2));
 
     }
 
     private String getVerifyStatus(byte[] data, int srcPos){
-        StringBuilder byteString = new StringBuilder(byteToBit(data[srcPos+DATA_OFFSET])).reverse();
-        byteString.append(new StringBuilder(byteToBit(data[srcPos + 1 + DATA_OFFSET])).reverse());
+        //高低位反向，先处理后一个byte，再处理前一个byte。
+        StringBuilder byteString = new StringBuilder(byteToBit(data[srcPos + 1 +DATA_OFFSET])).reverse();
+        byteString.append(new StringBuilder(byteToBit(data[srcPos + DATA_OFFSET])).reverse());
         return byteString.toString();
     }
 

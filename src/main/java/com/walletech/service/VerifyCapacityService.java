@@ -40,8 +40,10 @@ public class VerifyCapacityService {
     }
 
     public void pollingVerifyCapacity(){
+        logger.debug("开始核容指令。");
         List<VerifyCapacity> infos = verifyCapacityMapper.pollingVerifyCapacity(serverNum);
         if (CollectionUtils.isEmpty(infos)){
+            logger.debug("无可下发指令，或者设备不在线。");
             return;
         }
         for(VerifyCapacity info : infos){

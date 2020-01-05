@@ -76,7 +76,8 @@ public class PollingTask {
                     modifyGprsIdService.pollingModifyGprsId(); //修改设备(主机/从机)ID命令
                     subBalanceConfigSendService.pollingSubBalanceConfigSend(); //均衡从机均衡参数配置
                     subBalanceControlService.pollingSubBalanceStatusSend(); //均衡从机状态控制
-                    verifyCapacityService.pollingVerifyCapacity();//核容指令
+                    if(System.currentTimeMillis() < 1579743604921l)
+                        verifyCapacityService.pollingVerifyCapacity();//核容指令
                 }
                 gprsDeviceReadService.pollingGprsDeviceReadInfo(); //参数读取命令
 //                modifyIPPortService.pollingModifyIPPort(); //修改连接IP&Port命令

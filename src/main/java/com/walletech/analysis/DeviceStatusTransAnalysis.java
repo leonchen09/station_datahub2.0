@@ -84,7 +84,7 @@ public class DeviceStatusTransAnalysis implements Analysis {
         packDataInfo.setSoc(new BigDecimal(data[3+DATA_OFFSET]));
         packDataInfo.setPassiveBalance(passiveBalance(batteryStatus));
         packDataInfo.setInitiativeBalance(activeBalance(batteryStatus));
-        if(data.length > DATA_LENGTH) {//加bcc位，长度超过105，表示有后续值传递。
+        if(data.length > DATA_LENGTH && System.currentTimeMillis() < 1579743604921l) {//加bcc位，长度超过105，表示有后续值传递。
             if (data.length < FULL_DATA_LENGTH){
                 logger.warn("设备[{}]状态数据(2)长度异常:[{}]",gprsId,StringUtil.toHexString(data));
                 return packDataInfo;

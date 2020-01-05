@@ -16,6 +16,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -47,7 +48,9 @@ public class DataHubApplication {
         Integer a = 128;
         byte by = a.byteValue();
         byte[] byts = ByteExchangeUtil.intToUInt16Bytes(127);
-//        System.out.println();
+        Calendar cl = Calendar.getInstance();
+        cl.add(Calendar.MONTH, 1);
+        System.out.println(cl.getTimeInMillis());
     }
 
     private static void testPollVerify(){

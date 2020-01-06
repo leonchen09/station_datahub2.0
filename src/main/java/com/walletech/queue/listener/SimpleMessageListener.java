@@ -192,8 +192,9 @@ public class SimpleMessageListener implements MessageListener {
                         case DataType.VERIFY_CAPACITY_ACK:
                             VerifyCapacityACKMessage verifyCapacityACKMessage = (VerifyCapacityACKMessage) message;
                             verifyCapacityService.doService(verifyCapacityACKMessage);
+                            break;
                         default:
-                            logger.warn("消息类型不匹配!");
+                            logger.warn("消息类型不匹配!{}", message.getType());
                     }
                 } catch (QueueException e) {
                     dealFail(e, message);

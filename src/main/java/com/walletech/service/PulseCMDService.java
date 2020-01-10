@@ -180,6 +180,10 @@ public class PulseCMDService {
             if (status == 0){
                 if (now.getTime() - endTime.getTime() >= requestTimeOut * 60 * 1000){
                     PulseCMDInfo nowCMDInfo = pulseDischargeCMDMapper.checkTimeOut(pulseCMDInfo);
+                    if(nowCMDInfo == null){//数据被删除了
+                        CacheUtil.getPulseCmdMap().remove(pulseCMDInfo.getGprsId());
+                        continue;
+                    }
                     Integer nowStatus = nowCMDInfo.getSendDone();
                     // 请求应答其他机器，且脉冲未完成的情况下
                     if (nowStatus == 1){

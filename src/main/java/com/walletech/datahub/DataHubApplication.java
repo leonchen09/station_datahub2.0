@@ -44,12 +44,13 @@ public class DataHubApplication {
         server.start();
     }
 
-    private static void testByte(){
+    public static void main1(String[] argv){
         Integer a = 128;
         byte by = a.byteValue();
         byte[] byts = ByteExchangeUtil.intToUInt16Bytes(127);
         Calendar cl = Calendar.getInstance();
         cl.add(Calendar.MONTH, 1);
+        cl.add(Calendar.DAY_OF_MONTH, 11);
         System.out.println(cl.getTimeInMillis());
     }
 

@@ -1,5 +1,6 @@
 package com.walletech.server.handler;
 
+import com.sun.tools.javac.util.List;
 import com.walletech.analysis.DataType;
 import com.walletech.po.GprsConnectionInfo;
 import com.walletech.queue.Sender;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 
@@ -40,18 +42,20 @@ public class OnlineOfflineHandler extends ChannelInboundHandlerAdapter {
             logger.debug("设备[{}]已上线,更新上次活跃时间",gprsId);
             gprs.setLastActiveTime(now);
             Channel oldChannel = gprs.getChannel();
-            if (oldChannel.id()!=ctx.channel().id()){
+            if (oldChannel.id()!=ctx.channel().id()){//更换channel
                 oldChannel.close();
                 gprs.setChannel(ctx.channel());
                 CacheUtil.getGprsChannelMap().put(gprsId,ctx.channel());
-                ctx.channel().attr(CacheUtil.GPRS).set(gprsId);
+                //ctx.channel().attr(CacheUtil.GPRS).set(gprsId);
+                saveGprsId(ctx, gprsId);
                 logger.info("[{}] 切换channel",gprsId);
             }
             return;
         }
         //设备上线
         logger.info("设备[{}]连接本机,服务器编号[{}],端口[{}]",gprsId,serverNum,serverPort);
-        ctx.channel().attr(CacheUtil.GPRS).set(gprsId);
+//        ctx.channel().attr(CacheUtil.GPRS).set(gprsId);
+        saveGprsId(ctx, gprsId);
         gprs = new GprsConnectionInfo();
         gprs.setChannel(ctx.channel());
         gprs.setLastActiveTime(now);
@@ -100,13 +104,21 @@ public class OnlineOfflineHandler extends ChannelInboundHandlerAdapter {
      * @param ctx
      */
     private void offline(ChannelHandlerContext ctx){
-        String gprsId = ctx.channel().attr(CacheUtil.GPRS).get();
-        if (gprsId == null){
+        String gprsIdStr = ctx.channel().attr(CacheUtil.GPRS).get();
+        if (gprsIdStr == null){
             logger.info("未知设备离线");
             return;
         }
+        String[] gprsIds = gprsIdStr.split(",");
+        for(String gprsId : gprsIds){
+            singleOffline(ctx, gprsId);
+        }
+    }
+
+    private void singleOffline(ChannelHandlerContext ctx, String gprsId){
         GprsConnectionInfo gprsInfo = CacheUtil.getGprsMap().get(gprsId);
         if (gprsInfo == null){
+            logger.warn("channel关闭，gprsid{}未缓存", gprsId);
             return;
         }
         Channel cacheChannel = gprsInfo.getChannel();
@@ -120,6 +132,19 @@ public class OnlineOfflineHandler extends ChannelInboundHandlerAdapter {
         message.setType(DataType.ONLINEOFFLINE_TYPE);
         message.setGprsConnectionInfo(gprsInfo);
         sender.saveMessage(message);
+    }
+    /**
+     * 保存gprsid到channel context中
+     * @param ctx
+     * @param gprsId
+     */
+    private void saveGprsId(ChannelHandlerContext ctx, String gprsId){
+        String oldGprsId = ctx.channel().attr(CacheUtil.GPRS).get();
+        if(!StringUtils.isEmpty(oldGprsId)){
+            gprsId = oldGprsId + "," + gprsId;
+        }
+        ctx.channel().attr(CacheUtil.GPRS).set(gprsId);
+        logger.debug("在channel{}中保存gprsid{}",ctx.channel().id(), gprsId);
     }
 
 }

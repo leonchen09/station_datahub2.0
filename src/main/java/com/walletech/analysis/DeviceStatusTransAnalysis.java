@@ -207,7 +207,9 @@ public class DeviceStatusTransAnalysis implements Analysis {
      */
     private void analysisVerifyStatus(byte[] data, PackDataInfo packDataInfo){
         String aStatus = getVerifyStatus(data, 96);//a路状态
-        logger.info("设备[{}]a路状态：[{}]", packDataInfo.getGprsId(), aStatus);
+        if(logger.isDebugEnabled()) {
+            logger.debug("设备[{}]a路状态：[{}]", packDataInfo.getGprsId(), aStatus);
+        }
         //Bit0：A路电池在线状态；0：不在线；1：在线；
         packDataInfo.setaOnline((byte)Integer.parseInt(aStatus.substring(0, 1)));
         //Bit1：A路接触器状态：  0：断开；1：闭合；
@@ -224,7 +226,9 @@ public class DeviceStatusTransAnalysis implements Analysis {
         packDataInfo.setaErrorCode((byte)Integer.parseInt(new StringBuilder(aStatus.substring(8, 11)).reverse().toString(), 2));
 
         String bStatus = getVerifyStatus(data, 102);//b路状态
-        logger.info("设备[{}]b路状态：[{}]", packDataInfo.getGprsId(), bStatus);
+        if(logger.isDebugEnabled()) {
+            logger.debug("设备[{}]b路状态：[{}]", packDataInfo.getGprsId(), bStatus);
+        }
         //Bit0：A路电池在线状态；0：不在线；1：在线；
         packDataInfo.setbOnline((byte)Integer.parseInt(bStatus.substring(0, 1)));
         //Bit1：A路接触器状态：  0：断开；1：闭合；
@@ -241,7 +245,9 @@ public class DeviceStatusTransAnalysis implements Analysis {
         packDataInfo.setbErrorCode((byte)Integer.parseInt(new StringBuilder(bStatus.substring(8, 11)).reverse().toString(), 2));
 
         String cStatus = getVerifyStatus(data, 108);//c路状态
-        logger.info("设备[{}]c路状态：[{}]", packDataInfo.getGprsId(), cStatus);
+        if(logger.isDebugEnabled()) {
+            logger.debug("设备[{}]c路状态：[{}]", packDataInfo.getGprsId(), cStatus);
+        }
         //Bit0：A路电池在线状态；0：不在线；1：在线；
         packDataInfo.setcOnline((byte)Integer.parseInt(cStatus.substring(0, 1)));
         //Bit1：A路接触器状态：  0：断开；1：闭合；

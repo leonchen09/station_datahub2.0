@@ -43,8 +43,10 @@ public class OnlineOfflineHandler extends ChannelInboundHandlerAdapter {
             gprs.setLastActiveTime(now);
             Channel oldChannel = gprs.getChannel();
             if (oldChannel.id()!=ctx.channel().id()){//更换channel
-                oldChannel.close();
-                gprs.setChannel(ctx.channel());
+                //不能关闭oldchannel，因为改变ip后，一个设备先传数据，缓存中记录了新channel，另一个还是原channel，在离线判断中会
+                //检查缓存中的channel和关闭的channel，两者一致，导致另一个设备离线。再传递数据，又会马上上线，频繁更新数据库。
+//                oldChannel.close();
+                gprs.setChannel(ctx.channel());//更新了gprsmap中改id对应的channel
                 CacheUtil.getGprsChannelMap().put(gprsId,ctx.channel());
                 //ctx.channel().attr(CacheUtil.GPRS).set(gprsId);
                 saveGprsId(ctx, gprsId);

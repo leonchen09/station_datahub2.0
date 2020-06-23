@@ -52,6 +52,16 @@ public class VersionBalanceAnalysis implements Analysis {
         byte[] bluMasterVersion = new byte[7];
         System.arraycopy(data,DATA_OFFSET+21,bluMasterVersion,0,7);
         info.setBluMasterVersion(ProtocolUtil.getVersionInfo(bluMasterVersion));
+        //读取sim iccid
+        if(data.length > 28) {
+            StringBuffer sb = new StringBuffer();
+            for( int i = 28; i < data.length && i < 48; i ++){
+                char c = (char)data[i];
+                sb.append(c);
+            }
+            info.setIccid(sb.toString());
+            logger.debug("[{}]解析iccid值："+ info.getIccid(), gprsId);
+        }
         VersionBalanceMessage message = new VersionBalanceMessage();
         message.setType(DataType.VERSION_BALANCE_READ);
         message.setVersionBalanceInfo(info);

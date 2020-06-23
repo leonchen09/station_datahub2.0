@@ -172,11 +172,12 @@
   </update>
   <update id="updateVersionBalanceInfo" parameterType="com.walletech.po.VersionBalanceInfo" >
     insert into version_and_balance_info (gprs_id, para1,para2, para3, para4,para5, para6, para7,
-                                          blu_master_id, master_version, blu_master_version,update_time)
+                                          blu_master_id, master_version, blu_master_version,update_time, simiccid)
     values (#{gprsId,jdbcType=VARCHAR}, #{para1,jdbcType=INTEGER},#{para2,jdbcType=INTEGER},
             #{para3,jdbcType=INTEGER}, #{para4,jdbcType=INTEGER},#{para5,jdbcType=INTEGER},
             #{para6,jdbcType=INTEGER}, #{para7,jdbcType=INTEGER},#{bluMasterId,jdbcType=VARCHAR},
-            #{masterVersion,jdbcType=VARCHAR}, #{bluMasterVersion,jdbcType=VARCHAR},#{updateTime,jdbcType=TIMESTAMP})
+            #{masterVersion,jdbcType=VARCHAR}, #{bluMasterVersion,jdbcType=VARCHAR},#{updateTime,jdbcType=TIMESTAMP},
+            #{iccid,jdbcType=VARCHAR})
     ON DUPLICATE KEY UPDATE
       gprs_id = #{gprsId,jdbcType=VARCHAR},
       para1 = #{para1,jdbcType=INTEGER},
@@ -189,6 +190,7 @@
       blu_master_id = #{bluMasterId,jdbcType=VARCHAR},
       master_version = #{masterVersion,jdbcType=VARCHAR},
       blu_master_version = #{bluMasterVersion,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = #{updateTime,jdbcType=TIMESTAMP,
+      simiccid=#{iccid,jdbcType=VARCHAR}}
   </update>
 </mapper>

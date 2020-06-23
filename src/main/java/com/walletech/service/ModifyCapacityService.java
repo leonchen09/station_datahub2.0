@@ -78,12 +78,14 @@ public class ModifyCapacityService {
                 logger.warn("设备[{}]已离线，修改电池容量命令发送失败",gprsId);
                 return false;
             }
-            byte[] request = new byte[7];
+            byte[] request = new byte[13];
             request[3] = (byte) 0x21;
             byte[] capacity = ByteExchangeUtil.intToUInt16Bytes(info.getCapacity() * 100);
+            byte[] id = ProtocolUtil.getGprsIdBytes(gprsId);
             System.arraycopy(capacity,0,request,4,2);
+            System.arraycopy(capacity,0,request,6,6);
             request = ProtocolUtil.beforeSend(request);
-            ByteBuf buf = channel.alloc().directBuffer(7);
+            ByteBuf buf = channel.alloc().directBuffer(13);
             buf.writeBytes(request);
             channel.writeAndFlush(buf);
             logger.info("设备[{}]修改电池容量命令发送成功，[{}]",gprsId,StringUtil.toHexString(request));

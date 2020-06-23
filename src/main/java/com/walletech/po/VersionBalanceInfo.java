@@ -27,6 +27,8 @@ public class VersionBalanceInfo {
 
     private String bluMasterVersion;
 
+    private String iccid;
+
     private Date updateTime;
 
     public Integer getId() {
@@ -131,5 +133,13 @@ public class VersionBalanceInfo {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getIccid() {
+        return iccid;
+    }
+
+    public void setIccid(String iccid) {
+        this.iccid = iccid;
     }
 }

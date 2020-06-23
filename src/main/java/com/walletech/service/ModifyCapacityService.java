@@ -83,7 +83,7 @@ public class ModifyCapacityService {
             byte[] capacity = ByteExchangeUtil.intToUInt16Bytes(info.getCapacity() * 100);
             byte[] id = ProtocolUtil.getGprsIdBytes(gprsId);
             System.arraycopy(capacity,0,request,4,2);
-            System.arraycopy(capacity,0,request,6,6);
+            System.arraycopy(id,0,request,6,6);
             request = ProtocolUtil.beforeSend(request);
             ByteBuf buf = channel.alloc().directBuffer(13);
             buf.writeBytes(request);

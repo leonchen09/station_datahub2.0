@@ -6,6 +6,7 @@ import com.walletech.queue.message.VersionBalanceMessage;
 import com.walletech.util.ByteExchangeUtil;
 import com.walletech.util.ProtocolUtil;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.util.internal.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class VersionBalanceAnalysis implements Analysis {
 
     @Override
     public void doAnalysis(byte[] data, String gprsId, ChannelHandlerContext ctx) {
-        logger.debug("开始解析[{}]远程读取主从机信息帧",gprsId);
+        logger.info("开始解析[{}]远程读取主从机信息帧[{}]",gprsId, StringUtil.toHexString(data));
         Date now = new Date();
         VersionBalanceInfo info = new VersionBalanceInfo();
         info.setUpdateTime(now);

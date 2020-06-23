@@ -200,7 +200,7 @@
       blu_master_id = #{bluMasterId,jdbcType=VARCHAR},
       master_version = #{masterVersion,jdbcType=VARCHAR},
       blu_master_version = #{bluMasterVersion,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=TIMESTAMP,
-      simiccid=#{iccid,jdbcType=VARCHAR}}
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      simiccid=#{iccid,jdbcType=VARCHAR}
   </update>
 </mapper>

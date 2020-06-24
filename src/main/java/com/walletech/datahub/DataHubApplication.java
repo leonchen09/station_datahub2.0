@@ -45,13 +45,17 @@ public class DataHubApplication {
     }
 
     public static void main1(String[] argv){
-        Integer a = 128;
-        byte by = a.byteValue();
-        byte[] byts = ByteExchangeUtil.intToUInt16Bytes(127);
-        Calendar cl = Calendar.getInstance();
-        cl.add(Calendar.MONTH, 1);
-        cl.add(Calendar.DAY_OF_MONTH, 11);
-        System.out.println(cl.getTimeInMillis());
+        byte[] data = new byte[]{0x38,0x39,0x38,0x36,0x30,37,62,36,31,39,31,38,63,30,30,36,30,39,35,36};
+        StringBuffer sb = new StringBuffer();
+        for( int i = 0; i < data.length && i < 20; i ++){
+            char c = (char)(data[i]);
+            System.out.print(c);
+            sb.append(c);
+        }
+        System.out.println();
+        System.out.println(sb.toString());
+        System.out.println("byte:"+data[0]);
+        System.out.println("byte1:" + (data[0] & 0xff));
     }
 
     private static void testPollVerify(){

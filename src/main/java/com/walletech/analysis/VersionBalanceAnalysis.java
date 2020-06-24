@@ -29,7 +29,7 @@ public class VersionBalanceAnalysis implements Analysis {
 
     @Override
     public void doAnalysis(byte[] data, String gprsId, ChannelHandlerContext ctx) {
-        logger.info("开始解析[{}]远程读取主从机信息帧[{}]",gprsId, StringUtil.toHexString(data));
+        logger.debug("开始解析[{}]远程读取主从机信息帧[{}]",gprsId, StringUtil.toHexString(data));
         Date now = new Date();
         VersionBalanceInfo info = new VersionBalanceInfo();
         info.setUpdateTime(now);
@@ -54,11 +54,12 @@ public class VersionBalanceAnalysis implements Analysis {
         System.arraycopy(data,DATA_OFFSET+21,bluMasterVersion,0,7);
         info.setBluMasterVersion(ProtocolUtil.getVersionInfo(bluMasterVersion));
         //读取sim iccid
-        if(data.length > 28) {
+        if(data.length > DATA_OFFSET + 28) {
             StringBuffer sb = new StringBuffer();
-            for( int i = 28; i < data.length && i < 48; i ++){
+            for( int i = DATA_OFFSET + 28; i < data.length && i < DATA_OFFSET + 48; i ++){
                 char c = (char)data[i];
                 sb.append(c);
+                logger.debug("原始byte:"+data[i] + ",转换后的char:" + c);
             }
             info.setIccid(sb.toString());
             logger.debug("[{}]解析iccid值："+ info.getIccid(), gprsId);

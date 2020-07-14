@@ -6,6 +6,9 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.serializer.RedisSerializer;
 
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,7 +21,6 @@ public class RedisUtil {
 
         ValueOperations valueOperations = redisTemplate.opsForValue();
         valueOperations.set(key, value);
-
     }
 
     public static void setBytes(final String Key, final byte[] bytes){
@@ -42,6 +44,36 @@ public class RedisUtil {
     public static Object get(String key) {
         Object value =  redisTemplate.opsForValue().get(key);
         return value;
+    }
+
+    public static void refreshCache(String key, Integer value) {
+        setBytes(key, serialize(value));
+//        // 修改key的值，与name绑定
+//        String _key = String.valueOf(key);// key必须是String 类型
+//        // 将数据存入redis
+//        if (null != value) {
+//            Serializable val = (Serializable) value;// value必须是Serializable类型
+//            redisTemplate.opsForValue().set(_key.getBytes(), redisTemplate.getValueSerializer().serialize(val));
+//        }
+    }
+
+    public static byte[] serialize(Object object) {
+        if (object == null) {
+            return null;
+        }
+        ObjectOutputStream oos = null;
+        ByteArrayOutputStream baos = null;
+        try {
+            // 序列化
+            baos = new ByteArrayOutputStream();
+            oos = new ObjectOutputStream(baos);
+            oos.writeObject(object);
+            byte[] bytes = baos.toByteArray();
+            return bytes;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static void setList(String key, List<?> value) {

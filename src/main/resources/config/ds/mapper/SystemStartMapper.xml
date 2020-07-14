@@ -10,4 +10,7 @@
         update gprs_device_info set link_status = 0
         where gprs_id in (select gprs_id from gprs_connection_info where server_num = #{serverNum,jdbcType=INTEGER})
     </update>
+    <select id="selectAllStationId" resultType="map">
+        select gprs_id, id from base_station_info where gprs_id != '-1'
+    </select>
 </mapper>

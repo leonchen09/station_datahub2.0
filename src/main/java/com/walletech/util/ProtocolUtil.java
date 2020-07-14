@@ -80,6 +80,14 @@ public class ProtocolUtil {
     }
 
     /**
+     * 将stationid与gprsid对应关系写入
+     * @param gprsId
+     * @param stationId
+     */
+    public static void putStationId(String gprsId, Integer stationId){
+        RedisUtil.refreshCache("srv_battery_station_gatewayAndBackground_"+gprsId, stationId);
+    }
+    /**
      * 通过gprsId 从Redis中获取设备状态
      * @param gprsId
      * @return

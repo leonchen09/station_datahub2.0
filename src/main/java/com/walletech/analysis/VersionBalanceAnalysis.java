@@ -54,7 +54,7 @@ public class VersionBalanceAnalysis implements Analysis {
         System.arraycopy(data,DATA_OFFSET+21,bluMasterVersion,0,7);
         info.setBluMasterVersion(ProtocolUtil.getVersionInfo(bluMasterVersion));
         //读取sim iccid
-        if(data.length > DATA_OFFSET + 28) {
+        if(data.length > DATA_OFFSET + 28 + 1) {//加上bcc位
             StringBuffer sb = new StringBuffer();
             for( int i = DATA_OFFSET + 28; i < data.length && i < DATA_OFFSET + 48; i ++){
                 char c = (char)data[i];

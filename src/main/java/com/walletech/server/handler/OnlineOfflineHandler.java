@@ -110,6 +110,8 @@ public class OnlineOfflineHandler extends ChannelInboundHandlerAdapter {
         if (gprsIdStr == null){
             logger.info("未知设备离线");
             return;
+        }else{
+            logger.info("设备离线，channel中保存的gprsid：" + gprsIdStr);
         }
         String[] gprsIds = gprsIdStr.split(",");
         for(String gprsId : gprsIds){

@@ -15,7 +15,8 @@
   <select id="pollingVerifyCapacity" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select t1.*
     from verify_capacity_send t1,gprs_connection_info t2
-    where t1.gprs_id = t2.gprs_id and t2.link_status = 1 and t2.server_num = #{serverNum} and t1.send_done = 0 group by t1.gprs_id
+    where t1.gprs_id = t2.gprs_id and t2.link_status = 1 and t2.server_num = #{serverNum} and t1.send_done = 0 and t1.created_time &gt;= now()
+    group by t1.gprs_id
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from verify_capacity_send
